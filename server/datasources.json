@@ -15,12 +15,12 @@
     "transports": [
       {
         "type": "SMTP",
-        "host": "smtp.gmail.com",
+        "host": "email.thinkbeauty.net",
         "secure": true,
         "port": 465,
         "auth": {
-          "user": "mehtakaran7860@gmail.com",
-          "pass": "anjumehta@123"
+          "user": "info@thinkbeauty.net",
+          "pass": "Ahmedelham9190*"
         }
       }
     ]
