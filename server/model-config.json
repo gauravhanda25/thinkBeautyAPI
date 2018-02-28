@@ -101,5 +101,17 @@
   "Event": {
     "dataSource": "mongo",
     "public": true
+  },
+  "Nails": {
+    "dataSource": "mongo",
+    "public": true
+  },
+  "Hair": {
+    "dataSource": "mongo",
+    "public": true
+  },
+  "Makeup": {
+    "dataSource": "mongo",
+    "public": true
   }
 }

@@ -13,7 +13,7 @@
       "type": "belongsTo",
       "model": "Member",
       "foreignKey": "",
-      "through" : ""
+      "through": ""
     }
   },
   "acls": [],
