@@ -45,21 +45,24 @@ module.exports = async function(app)
     RoleMapping.defineProperty('principalId', {
       type: ObjectID,
     });
-    Member.defineProperty('oem', {
+    
+    /* Nails.defineProperty('created_by', {
           type: ObjectID,
         });
-    Member.defineProperty('mr', {
+    Makeup.defineProperty('created_by', {
               type: ObjectID,
             });
-    Member.defineProperty('center', {
+    Hair.defineProperty('created_by', {
               type: ObjectID,
             });
-    Member.defineProperty('brand', {
+    Artistservices.defineProperty('artistId', {
               type: ObjectID,
             });
-    DealerAddress.defineProperty('dealerId', {
+    Artistservices.defineProperty('subserviceId', {
           type: ObjectID,
         });
+
+    */
     DealerAddress.defineProperty('country', {
               type: ObjectID,
             });

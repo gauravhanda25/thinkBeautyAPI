@@ -113,5 +113,9 @@
   "Makeup": {
     "dataSource": "mongo",
     "public": true
+  },
+  "Artistservices": {
+    "dataSource": "mongo",
+    "public": true
   }
 }
