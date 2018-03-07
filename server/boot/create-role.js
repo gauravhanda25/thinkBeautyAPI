@@ -1,14 +1,28 @@
 const debug = require('debug')('loopback:boot:roles');
 
 debug.log = console.log.bind(console);
-
+const app = require('../server.js');
 module.exports = async function(app)
 {
   try
   {
     // used the models
-    const {Role, RoleMapping, Member, DealerAddress, DealerContact, Oem, Brand, Center, MR, AdvertisingAgency, AutoGroup, AutoGroupContact, AgencyContact, Nails, Makeup, Hair, Artistservices} = app.models;
+    const {Role, RoleMapping, Member, DealerAddress, DealerContact, Oem, Brand, Center, MR, AdvertisingAgency, AutoGroup, AutoGroupContact, AgencyContact, Nails, Makeup, Hair, Artistservices, Email} = app.models;
 
+
+    Email.send({
+              to: 'gaggy_handa@yahoo.com', from: app.get('email'), 'Testing email', html: 'New text to test'
+            }, (err) =>
+            {
+              if (err)
+              {
+                return reject(err);
+              }
+              // email sent
+              //return resolve();
+              console.log('> Email Sent!!')
+              //next();
+            });
     // create custom role Admin
     const AdminRole = await Role.findOne({where: {name: 'Admin'}});
     if (!AdminRole)
