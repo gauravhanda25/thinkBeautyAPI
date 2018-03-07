@@ -11,7 +11,10 @@ module.exports = async function(app)
 
 
     Email.send({
-              to: 'gaggy_handa@yahoo.com', from: app.get('email'), 'Testing email', html: 'New text to test'
+              to: 'gaggy_handa@yahoo.com',
+               from: app.get('email'),
+               subject : 'Testing email',
+                html: 'New text to test'
             }, (err) =>
             {
               if (err)
