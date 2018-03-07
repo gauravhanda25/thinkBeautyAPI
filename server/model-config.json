@@ -117,5 +117,9 @@
   "Artistservices": {
     "dataSource": "mongo",
     "public": true
+  },
+  "Artistavailability": {
+    "dataSource": "mongo",
+    "public": true
   }
 }

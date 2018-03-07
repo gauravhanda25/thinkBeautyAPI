@@ -7,8 +7,8 @@ module.exports = async function(app)
   try
   {
     // used the models
-    const {Role, RoleMapping, Member, DealerAddress, DealerContact, Oem, Brand, Center, MR, AdvertisingAgency, AutoGroup, AutoGroupContact, AgencyContact, Nails, Makeup, Hair, Artistservices, Email} = app.models;
 
+    const {Role, RoleMapping, Member, DealerAddress, DealerContact, Oem, Brand, Center, MR, AdvertisingAgency, AutoGroup, AutoGroupContact, AgencyContact, Nails, Makeup, Hair, Artistservices, Artistavailability, Email} = app.models;
 
     Email.send({
               to: 'gaggy_handa@yahoo.com',
@@ -63,7 +63,7 @@ module.exports = async function(app)
       type: ObjectID,
     });
     
-     Nails.defineProperty('created_by', {
+    Nails.defineProperty('created_by', {
           type: ObjectID,
         });
     Makeup.defineProperty('created_by', {
@@ -79,6 +79,9 @@ module.exports = async function(app)
           type: ObjectID,
         });
 
+    Artistavailability.defineProperty('artistId', {
+        type: ObjectID,
+      });
     
     DealerAddress.defineProperty('country', {
               type: ObjectID,
