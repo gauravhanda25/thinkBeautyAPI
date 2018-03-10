@@ -121,5 +121,13 @@
   "Artistavailability": {
     "dataSource": "mongo",
     "public": true
+  },
+  "Artistvacation": {
+    "dataSource": "mongo",
+    "public": true
+  },
+  "Artistcourses": {
+    "dataSource": "mongo",
+    "public": true
   }
 }
