@@ -129,5 +129,13 @@
   "Artistcourses": {
     "dataSource": "mongo",
     "public": true
+  },
+  "Artistgcc": {
+    "dataSource": "mongo",
+    "public": true
+  },
+  "Artistgcclocation": {
+    "dataSource": "mongo",
+    "public": true
   }
 }
