@@ -62,6 +62,10 @@ module.exports = async function(app)
     RoleMapping.defineProperty('principalId', {
       type: ObjectID,
     });
+
+    Member.defineProperty('country', {
+          type: ObjectID,
+        });
     
     Nails.defineProperty('created_by', {
           type: ObjectID,
