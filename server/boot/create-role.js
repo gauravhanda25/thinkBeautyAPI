@@ -76,23 +76,23 @@ module.exports = async function(app)
     Hair.defineProperty('created_by', {
               type: ObjectID,
             });
-    Artistservices.defineProperty('artistId', {
+    Artistservices.defineProperty('memberId', {
               type: ObjectID,
             });
     Artistservices.defineProperty('subserviceId', {
           type: ObjectID,
         });
 
-    Artistavailability.defineProperty('artistId', {
+    Artistavailability.defineProperty('memberId', {
         type: ObjectID,
       });
     
 
-    Artistvacation.defineProperty('artistId', {
+    Artistvacation.defineProperty('memberId', {
         type: ObjectID,
       });
     
-    Artistcourses.defineProperty('artistId', {
+    Artistcourses.defineProperty('memberId', {
         type: ObjectID,
       });
      Artistgcc.defineProperty('artistId', {
