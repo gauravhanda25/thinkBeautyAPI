@@ -66,6 +66,9 @@ module.exports = async function(app)
     Member.defineProperty('country', {
           type: ObjectID,
         });
+     Member.defineProperty('created_by', {
+          type: ObjectID,
+        });
     
     Nails.defineProperty('created_by', {
           type: ObjectID,
