@@ -137,5 +137,9 @@
   "Artistgcclocation": {
     "dataSource": "mongo",
     "public": true
+  },
+  "FileStorage": {
+    "dataSource": "mongo",
+    "public": true
   }
 }
