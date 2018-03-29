@@ -152,6 +152,10 @@ MR.defineProperty('centerId', {
           type: ObjectID,
         });
 
+FileStorage.defineProperty('memberId', {
+          type: ObjectID,
+        });
+
 
     // Helps to get the include relationship
     RoleMapping.belongsTo(Member);
