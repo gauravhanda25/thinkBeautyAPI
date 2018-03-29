@@ -103,7 +103,7 @@ module.exports = function(Member) {
     console.log('Finding customer with id', userEmail);
     const member = await Member.findOne({where: {email: userEmail}});
 
-    const url = `http://portaltest.bullseyesalesevents.com/#/resetpassword/${member.id}/${info.accessToken.id}`;
+    const url = `http://www.thinkbeauty.com/#/resetpassword/${member.id}/${info.accessToken.id}`;
     const emailTemplateParams = {
       logoUrl: '',
       url,
