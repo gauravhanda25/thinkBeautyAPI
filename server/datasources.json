@@ -14,13 +14,12 @@
     "connector": "mail",
     "transports": [
       {
-        "type": "SMTP",
-        "host": "email.thinkbeauty.net",
-        "secure": true,
-        "port": 465,
+        "type": "direct",
+        "host": "smtp-mail.outlook.com",
+        "port": 25,
         "auth": {
           "user": "info@thinkbeauty.net",
-          "pass": "Ahmedelham9190*"
+          "pass": "Thinkbeauty91*"
         }
       }
     ]

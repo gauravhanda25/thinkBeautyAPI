@@ -59,5 +59,11 @@
       "permission": "ALLOW"
     }
   ],
-  "methods": {}
+  "methods": {},
+  "mixins": {
+     "Timestamp": {
+       "created": "created",
+       "modified": "modified"
+     }
+   }
 }
