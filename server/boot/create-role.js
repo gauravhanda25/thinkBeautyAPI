@@ -102,10 +102,13 @@ module.exports = async function(app)
         type: ObjectID,
       });
 
-     Member.defineProperty('memberId', {
+     FileStorage.defineProperty('memberId', {
           type: ObjectID,
         });
-     Member.defineProperty('created_by', {
+     FileStorage.defineProperty('created_by', {
+          type: ObjectID,
+        });
+     FileStorage.defineProperty('courseId', {
           type: ObjectID,
         });
 
