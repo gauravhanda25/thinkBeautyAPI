@@ -50,6 +50,13 @@ module.exports = async function(app)
       debug('Created Regional Manager role');
     }
 
+    const Customer = await Role.findOne({where: {name: 'Customer'}});
+    if (!Customer)
+    {
+      await Role.create({name: 'Customer', role_id : 4});
+      debug('Customer created');
+    }
+
 // create custom role Account Manager
     
 
