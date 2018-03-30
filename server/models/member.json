@@ -8,6 +8,12 @@
   "Email": {
     "dataSource": "Email"
   },
+  "mixins": {
+    "Timestamp": {
+      "created": "created",
+      "modified": "modified"
+    }
+  },
   "properties": {},
   "validations": [],
   "relations": {
@@ -59,11 +65,5 @@
       "permission": "ALLOW"
     }
   ],
-  "methods": {},
-  "mixins": {
-     "Timestamp": {
-       "created": "created",
-       "modified": "modified"
-     }
-   }
+  "methods": {}
 }

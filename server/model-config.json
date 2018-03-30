@@ -141,5 +141,9 @@
   "FileStorage": {
     "dataSource": "mongo",
     "public": true
+  },
+  "Update": {
+    "dataSource": "mongo",
+    "public": true
   }
 }
