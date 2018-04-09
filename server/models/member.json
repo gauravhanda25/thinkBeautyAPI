@@ -37,6 +37,27 @@
       "type": "hasMany",
       "model": "Event",
       "foreignKey": ""
+    },
+    "artistservices": {
+      "type": "hasMany",
+      "model": "Artistservices",
+      "foreignKey": "artistId"
+    },
+    "filestorages": {
+      "type": "hasMany",
+      "model": "FileStorage",
+      "foreignKey": ""
+    },
+    "artistavailabilities": {
+      "type": "hasMany",
+      "model": "Artistavailability",
+      "foreignKey": ""
+    },
+    "countries" : {
+      "type": "belongsTo",
+      "model": "Country",
+      "foreignKey": "country",
+      "through": ""
     }
   },
   "acls": [

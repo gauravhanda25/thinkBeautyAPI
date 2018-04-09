@@ -7,7 +7,14 @@
   },
   "properties": {},
   "validations": [],
-  "relations": {},
+  "relations": {
+    "members" : {
+      "type": "belongsTo",
+      "model": "Member",
+      "foreignKey": "artistId",
+      "through": ""
+    }
+  },
   "acls": [],
   "methods": {}
 }

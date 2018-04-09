@@ -12,6 +12,11 @@
       "type": "hasMany",
       "model": "Province",
       "foreignKey": ""
+    },
+    "members": {
+      "type": "hasMany",
+      "model": "Member",
+      "foreignKey": "country"
     }
   },
   "acls": [],
