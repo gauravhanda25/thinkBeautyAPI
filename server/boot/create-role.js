@@ -8,7 +8,7 @@ module.exports = async function(app)
   {
     // used the models
 
-    const {Role, RoleMapping, Member, DealerAddress, DealerContact, Oem, Brand, Center, MR, AdvertisingAgency, AutoGroup, AutoGroupContact, AgencyContact, Nails, Makeup, Hair, Artistservices, Artistavailability, Artistvacation, Artistcourses, Email, Artistgcc, FileStorage} = app.models;
+    const {Role, RoleMapping, Member, DealerAddress, DealerContact, Oem, Brand, Center, MR, AdvertisingAgency, AutoGroup, AutoGroupContact, AgencyContact, Nails, Makeup, Hair, Artistservices, Artistavailability, Artistvacation, Artistcourses, Email, Artistgcc, FileStorage,favorite} = app.models;
 
     // Email.send({
     //           to: 'gaggy_handa@yahoo.com',
@@ -116,6 +116,14 @@ module.exports = async function(app)
           type: ObjectID,
         });
      FileStorage.defineProperty('courseId', {
+          type: ObjectID,
+        });
+
+     favorite.defineProperty('UserId', {
+          type: ObjectID,
+        });
+
+     favorite.defineProperty('memberId', {
           type: ObjectID,
         });
 

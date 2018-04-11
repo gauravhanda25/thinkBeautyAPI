@@ -8,7 +8,7 @@
   "properties": {},
   "validations": [],
   "relations": {
-    "members" : {
+    "members": {
       "type": "belongsTo",
       "model": "Member",
       "foreignKey": "memberId",

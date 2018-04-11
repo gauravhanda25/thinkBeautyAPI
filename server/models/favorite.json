@@ -1,0 +1,26 @@
+{
+  "name": "favorite",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "UserId": {
+      "type": "string"
+    },
+    "MemberId": {
+      "type": "string"
+    },
+    "Flag": {
+      "type": "string"
+    },
+    "Type": {
+      "type": "string"
+    }
+  },
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": {}
+}
