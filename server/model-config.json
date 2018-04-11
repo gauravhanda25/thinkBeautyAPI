@@ -145,5 +145,9 @@
   "Update": {
     "dataSource": "mongo",
     "public": true
+  },
+  "Commissions": {
+    "dataSource": "mongo",
+    "public": true
   }
 }

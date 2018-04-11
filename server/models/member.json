@@ -53,7 +53,7 @@
       "model": "Artistavailability",
       "foreignKey": ""
     },
-    "countries" : {
+    "countries": {
       "type": "belongsTo",
       "model": "Country",
       "foreignKey": "country",
