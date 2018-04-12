@@ -248,7 +248,6 @@ module.exports = function(Member) {
         } else {
             let dayNumber = moment(date).day();
             let weekends = [4,5];
-            let weekends = [0,1,2,3,6,7];
             let whereDate = {}
             if(weekends.indexOf(dayNumber) > -1) {
               whereDate = {where: {memberId:artistId, days: "weekend"}}
