@@ -5,7 +5,14 @@
   "options": {
     "validateUpsert": true
   },
-  "properties": {},
+  "properties": {
+    "starton" : {
+      "type": "Date"
+    },
+    "endon" : {
+      "type": "Date"
+    }
+  },
   "validations": [],
   "relations": {},
   "acls": [],

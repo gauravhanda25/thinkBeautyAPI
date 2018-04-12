@@ -2,6 +2,7 @@
 
 var config = require('../../server/config.json');
 var path = require('path');
+var moment = require('moment');
 const ejs = require('ejs');
 const Fs = require('fs');
 const app = require('../server.js');
@@ -188,12 +189,141 @@ module.exports = function(Member) {
 
 
   }
+
+  Member.getArtistById = async function(date, artistId, cb) {
+      const {Role, Artistvacation} = app.models;
+      
+      const vacation =  await Artistvacation.find({where: {and: [{starton: {lt : new Date(date)}}, {endon: {gt : new Date(date)}}]}});
+      if(vacation) {
+        cb(null, {'message' : 'Arist is on vacation on selected date. Please try other date.'});
+      }
+
+      let filterWithDate = {}
+      if(date) {
+        filterWithDate = {
+          relation: 'artistavailabilities', // include the owner object
+          scope: {
+            where: {date: date, days: "specificDate"}
+          }
+        };
+      }
+      Member.find({
+        include: [{
+                relation: 'artistservices', // include the owner object
+                scope: {
+                    where: {
+                        servicetype: 'home'
+                    }
+                }
+            },
+            filterWithDate,
+            {
+                relation: 'countries', // include the owner object
+            },
+            {
+                relation: 'filestorages', // include the owner object
+                scope: {
+                    where: {
+                        uploadType: 'main',
+                        status: 'active'
+                    }
+                }
+            }
+        ],
+        where: {
+            role_id: 2,
+            id: artistId
+        }
+    }, function(err, result) {
+
+        if(result) {
+            let data = JSON.stringify(result);
+            let finalData = JSON.parse(data)
+
+            var newArray = finalData.filter(function(el) {
+                return el.artistservices.length > 0;
+            });
+
+            cb(null, newArray);
+        } else {
+            let dayNumber = moment(date).day();
+            let weekends = [4,5];
+            let weekends = [0,1,2,3,6,7];
+            let whereDate = {}
+            if(weekends.indexOf(dayNumber) > -1) {
+              whereDate = {where: {memberId:artistId, days: "weekend"}}
+            } else {
+              whereDate = {where: {memberId:artistId, days: "working"}}
+            }
+            if(date) {
+              filterWithDate = {
+                relation: 'artistavailabilities', // include the owner object
+                scope: whereDate
+              };
+            }
+            Member.find({
+              include: [{
+                      relation: 'artistservices', // include the owner object
+                      scope: {
+                          where: {
+                              servicetype: 'home'
+                          }
+                      }
+                  },
+                  filterWithDate,
+                  {
+                      relation: 'countries', // include the owner object
+                  },
+                  {
+                      relation: 'filestorages', // include the owner object
+                      scope: {
+                          where: {
+                              uploadType: 'main',
+                              status: 'active'
+                          }
+                      }
+                  }
+              ],
+              where: {
+                  role_id: 2,
+                  id: artistId
+              }
+          }, function(err, result) {
+
+              if(result) {
+                  let data = JSON.stringify(result);
+                  let finalData = JSON.parse(data)
+
+                  var newArray = finalData.filter(function(el) {
+                      return el.artistservices.length > 0;
+                  });
+
+                  cb(null, newArray);
+              } else {
+                
+              }
+              
+          });
+        }
+        
+    });
+
+
+  }
   Member.remoteMethod('getArtists', {
           http: {path: '/getArtists', verb: 'get'},
           accepts: [
               {arg: 'date', type: 'string'},
               {arg: 'country', type: 'string'},
               {arg: 'serviceType', type: 'string'}],
+          returns: {arg: 'data', type: 'json'}
+    });
+
+  Member.remoteMethod('getArtistById', {
+          http: {path: '/getArtistById', verb: 'post'},
+          accepts: [
+              {arg: 'date', type: 'string'},
+              {arg: 'artistId', type: 'string'}],
           returns: {arg: 'data', type: 'json'}
     });
 };
