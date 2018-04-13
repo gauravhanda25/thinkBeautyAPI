@@ -58,6 +58,11 @@
       "model": "Artistcourses",
       "foreignKey": ""
     },
+    "customeraddresses": {
+      "type": "hasMany",
+      "model": "CustomerAddress",
+      "foreignKey": ""
+    },
     "favourites": {
       "type": "hasMany",
       "model": "favorite",

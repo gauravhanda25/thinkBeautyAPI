@@ -6,10 +6,10 @@
     "validateUpsert": true
   },
   "properties": {
-    "starton" : {
+    "starton": {
       "type": "Date"
     },
-    "endon" : {
+    "endon": {
       "type": "Date"
     }
   },

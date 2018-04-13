@@ -153,5 +153,9 @@
   "Commissions": {
     "dataSource": "mongo",
     "public": true
+  },
+  "CustomerAddress": {
+    "dataSource": "mongo",
+    "public": true
   }
 }

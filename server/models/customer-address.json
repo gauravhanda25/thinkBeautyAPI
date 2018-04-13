@@ -1,6 +1,5 @@
 {
-  "name": "Artistcourses",
-  "plural": "artistcourses",
+  "name": "CustomerAddress",
   "base": "PersistedModel",
   "idInjection": true,
   "options": {
