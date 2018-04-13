@@ -22,7 +22,7 @@
   "validations": [],
   "relations": {
     "members": {
-      "type": "hasMany",
+      "type": "belongsTo",
       "model": "Member",
       "foreignKey": "memberId"
     }

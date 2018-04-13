@@ -53,16 +53,15 @@
       "model": "Artistavailability",
       "foreignKey": ""
     },
+    "favourites": {
+      "type": "hasMany",
+      "model": "favorite",
+      "foreignKey": ""
+    },
     "countries": {
       "type": "belongsTo",
       "model": "Country",
       "foreignKey": "country",
-      "through": ""
-    },
-    "favorites": {
-      "type": "belongsTo",
-      "model": "favorite",
-      "foreignKey": "id",
       "through": ""
     }
   },

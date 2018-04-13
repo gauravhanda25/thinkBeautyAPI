@@ -119,7 +119,7 @@ module.exports = async function(app)
           type: ObjectID,
         });
 
-     favorite.defineProperty('UserId', {
+     favorite.defineProperty('userId', {
           type: ObjectID,
         });
 
@@ -127,48 +127,6 @@ module.exports = async function(app)
           type: ObjectID,
         });
 
-    DealerAddress.defineProperty('country', {
-              type: ObjectID,
-            });
-    DealerAddress.defineProperty('province', {
-              type: ObjectID,
-            });
-    DealerAddress.defineProperty('billcountry', {
-              type: ObjectID,
-            });
-    DealerAddress.defineProperty('billprovince', {
-              type: ObjectID,
-            });
-    DealerContact.defineProperty('dealerId', {
-          type: ObjectID,
-        });
-
-    AutoGroupContact.defineProperty('autoGroupId', {
-          type: ObjectID,
-        });
-
-    AgencyContact.defineProperty('advertisingAgencyId', {
-          type: ObjectID,
-        });
-Brand.defineProperty('oemId', {
-          type: ObjectID,
-        });
-Center.defineProperty('oemId', {
-          type: ObjectID,
-        });
-Center.defineProperty('brandId', {
-          type: ObjectID,
-        });
-
-MR.defineProperty('oemId', {
-          type: ObjectID,
-        });
-MR.defineProperty('brandId', {
-          type: ObjectID,
-        });
-MR.defineProperty('centerId', {
-          type: ObjectID,
-        });
 
 FileStorage.defineProperty('memberId', {
           type: ObjectID,
