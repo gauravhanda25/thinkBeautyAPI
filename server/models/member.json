@@ -58,6 +58,12 @@
       "model": "Country",
       "foreignKey": "country",
       "through": ""
+    },
+    "favorites": {
+      "type": "belongsTo",
+      "model": "favorite",
+      "foreignKey": "id",
+      "through": ""
     }
   },
   "acls": [

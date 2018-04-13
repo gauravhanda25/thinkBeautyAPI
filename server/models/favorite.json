@@ -6,21 +6,27 @@
     "validateUpsert": true
   },
   "properties": {
-    "UserId": {
+    "userId": {
       "type": "string"
     },
-    "MemberId": {
+    "memberId": {
       "type": "string"
     },
-    "Flag": {
+    "flag": {
       "type": "string"
     },
-    "Type": {
+    "type": {
       "type": "string"
     }
   },
   "validations": [],
-  "relations": {},
+  "relations": {
+    "members": {
+      "type": "hasMany",
+      "model": "Member",
+      "foreignKey": "memberId"
+    },
+  },
   "acls": [],
   "methods": {}
 }
