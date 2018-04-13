@@ -197,7 +197,10 @@ module.exports = function(Member) {
         Artistvacation.find({where: {and: [{starton: {lt : new Date(date)}}, {endon: {gt : new Date(date)}}]}}, function(err, vacation){
           if(vacation) {
             cb(null, {'message' : 'Arist is on vacation on selected date. Please try other date.'});
-          } else {
+          }
+        })
+      } else {
+ 
                let filterWithDate = {}
       if(date) {
         filterWithDate = {
@@ -308,15 +311,6 @@ module.exports = function(Member) {
     });
 
           }
-
-        });
-          
-      }
-      
-
-     
-
-
   }
   Member.remoteMethod('getArtists', {
           http: {path: '/getArtists', verb: 'get'},
