@@ -25,7 +25,7 @@
       "type": "hasMany",
       "model": "Member",
       "foreignKey": "memberId"
-    },
+    }
   },
   "acls": [],
   "methods": {}
