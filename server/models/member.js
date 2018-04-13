@@ -193,10 +193,13 @@ module.exports = function(Member) {
   Member.getArtistById = async function(date, artistId, cb) {
       const {Role, Artistvacation} = app.models;
       
-      const vacation =  await Artistvacation.find({where: {and: [{starton: {lt : new Date(date)}}, {endon: {gt : new Date(date)}}]}});
-      if(vacation) {
-        cb(null, {'message' : 'Arist is on vacation on selected date. Please try other date.'});
+      if(date) {
+        const vacation =  await Artistvacation.find({where: {and: [{starton: {lt : new Date(date)}}, {endon: {gt : new Date(date)}}]}});
+        if(vacation) {
+          cb(null, {'message' : 'Arist is on vacation on selected date. Please try other date.'});
+        }  
       }
+      
 
       let filterWithDate = {}
       if(date) {
