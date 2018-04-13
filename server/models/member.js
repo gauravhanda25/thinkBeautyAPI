@@ -190,18 +190,15 @@ module.exports = function(Member) {
 
   }
 
-  Member.getArtistById = async function(date, artistId, cb) {
+  Member.getArtistById =  function(date, artistId, cb) {
       const {Role, Artistvacation} = app.models;
       
       if(date) {
-        const vacation =  await Artistvacation.find({where: {and: [{starton: {lt : new Date(date)}}, {endon: {gt : new Date(date)}}]}});
-        if(vacation) {
-          cb(null, {'message' : 'Arist is on vacation on selected date. Please try other date.'});
-        }  
-      }
-      
-
-      let filterWithDate = {}
+        Artistvacation.find({where: {and: [{starton: {lt : new Date(date)}}, {endon: {gt : new Date(date)}}]}}, function(err, vacation){
+          if(vacation) {
+            cb(null, {'message' : 'Arist is on vacation on selected date. Please try other date.'});
+          } else {
+               let filterWithDate = {}
       if(date) {
         filterWithDate = {
           relation: 'artistavailabilities', // include the owner object
@@ -309,6 +306,15 @@ module.exports = function(Member) {
         }
         
     });
+
+          }
+
+        });
+          
+      }
+      
+
+     
 
 
   }
