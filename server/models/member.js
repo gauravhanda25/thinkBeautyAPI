@@ -190,7 +190,7 @@ module.exports = function(Member) {
 
   }
 
-  Member.getArtistById =  function(date, artistId, cb) {
+  Member.getArtistById = async function(date, artistId, cb) {
       const {Role, Artistvacation} = app.models;
       
       if(date) {
