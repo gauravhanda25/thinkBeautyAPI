@@ -247,7 +247,7 @@ module.exports = function(Member) {
                 return el.artistservices.length > 0;
             });
 
-            cb(null, newArray);
+            return cb(null, newArray);
         } else {
             let dayNumber = moment(date).day();
             let weekends = [4,5];
@@ -300,7 +300,7 @@ module.exports = function(Member) {
                       return el.artistservices.length > 0;
                   });
 
-                  cb(null, newArray);
+                  return  cb(null, newArray);
               } else {
                 
               }
