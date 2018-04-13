@@ -53,6 +53,11 @@
       "model": "Artistavailability",
       "foreignKey": ""
     },
+    "artistcourses": {
+      "type": "hasMany",
+      "model": "Artistcourses",
+      "foreignKey": ""
+    },
     "favourites": {
       "type": "hasMany",
       "model": "favorite",
