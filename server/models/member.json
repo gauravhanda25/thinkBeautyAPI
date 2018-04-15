@@ -104,6 +104,12 @@
       "principalType": "ROLE",
       "principalId": "Salon",
       "permission": "ALLOW"
+    },
+    {
+      "accessType": "*",
+      "principalType": "ROLE",
+      "principalId": "Customer",
+      "permission": "ALLOW"
     }
   ],
   "methods": {}

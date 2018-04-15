@@ -139,6 +139,9 @@ module.exports = async function(app)
      Booking.defineProperty('voucherId', {
           type: ObjectID,
         });
+     Booking.defineProperty('cancelledBy', {
+          type: ObjectID,
+        });
 
 
 FileStorage.defineProperty('memberId', {
