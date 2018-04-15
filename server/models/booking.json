@@ -1,0 +1,32 @@
+{
+  "name": "Booking",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "mixins": {
+    "Timestamp": {
+      "created": "bookedAt",
+      "modified": "modified"
+    }
+  },
+  "properties": {},
+  "validations": [],
+  "relations": {
+    "members": {
+      "type": "belongsTo",
+      "model": "Member",
+      "foreignKey": "userId",
+      "through": ""
+    },
+    "artists": {
+      "type": "belongsTo",
+      "model": "Member",
+      "foreignKey": "artistId",
+      "through": ""
+    }
+  },
+  "acls": [],
+  "methods": {}
+}

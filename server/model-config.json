@@ -157,5 +157,13 @@
   "CustomerAddress": {
     "dataSource": "mongo",
     "public": true
+  },
+  "Booking": {
+    "dataSource": "mongo",
+    "public": true
+  },
+  "Voucher": {
+    "dataSource": "mongo",
+    "public": true
   }
 }

@@ -201,7 +201,7 @@ module.exports = function(Member) {
         })
       } else {
  
-               let filterWithDate = {}
+      let filterWithDate = {}
       if(date) {
         filterWithDate = {
           relation: 'artistavailabilities', // include the owner object

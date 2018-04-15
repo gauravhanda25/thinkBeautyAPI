@@ -68,6 +68,11 @@
       "model": "favorite",
       "foreignKey": ""
     },
+    "bookings": {
+      "type": "hasMany",
+      "model": "Booking",
+      "foreignKey": "userId"
+    },
     "countries": {
       "type": "belongsTo",
       "model": "Country",
