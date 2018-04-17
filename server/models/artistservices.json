@@ -14,6 +14,24 @@
       "foreignKey": "artistId",
       "through": ""
     }
+    ,"hairs": {
+      "type": "belongsTo",
+      "model": "Hair",
+      "foreignKey": "subserviceId",
+      "through": ""
+    },
+    "makeups": {
+      "type": "belongsTo",
+      "model": "Makeup",
+      "foreignKey": "subserviceId",
+      "through": ""
+    },
+    "nails": {
+      "type": "belongsTo",
+      "model": "Nail",
+      "foreignKey": "subserviceId",
+      "through": ""
+    }
   },
   "acls": [
     {

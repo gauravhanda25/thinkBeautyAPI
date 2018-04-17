@@ -190,6 +190,70 @@ module.exports = function(Member) {
 
   }
 
+  Member.getArtistWithServices = function(date, country, serviceType, cb) {
+      if(serviceType == 'hair') {
+        serviceType = 'hairs';
+      } else if(serviceType == 'makeup') {
+        serviceType = 'makeups'
+      } else {
+        serviceType = 'nails'
+      }
+      let filterWithDate = {}
+      if(date) {
+        filterWithDate = {
+          relation: 'artistavailabilities', // include the owner object
+          scope: {
+            where: {date: date}
+          }
+        };
+      }
+      Member.find({
+        include: [{
+          relation: 'artistservices', // include the owner object
+          scope: { 
+            include : { "relation" : serviceType}
+          }
+        },
+        filterWithDate
+        ,
+         {
+          relation: 'countries', // include the owner object
+          scope: { 
+            where: {id: country}
+          }
+          },
+         {
+          relation: 'filestorages', // include the owner object
+           scope: { 
+            where: {uploadType: 'main', status : 'active'} 
+           
+          }
+          }
+        ],
+        where : {
+          role_id : 2
+        }
+      }, function(err, result) {
+
+        let data =  JSON.stringify(result);
+        let finalData = JSON.parse(data)
+          
+        var newArray = finalData.filter(function (el) {
+          let elArtistServices =  JSON.stringify(el.artistservices);
+          let finalDataServices = JSON.parse(elArtistServices)
+          el.artistservices = finalDataServices.filter(function(elInner){
+              if(elInner[serviceType]){
+                return true;  
+              }              
+          })
+          return el.artistservices.length > 0;  
+        });
+          
+          cb(null, newArray);
+      });
+
+
+  }
   Member.getArtistById =  function(date, artistId, cb) {
       const {Role, Artistvacation} = app.models;
       
@@ -314,6 +378,15 @@ module.exports = function(Member) {
   }
   Member.remoteMethod('getArtists', {
           http: {path: '/getArtists', verb: 'get'},
+          accepts: [
+              {arg: 'date', type: 'string'},
+              {arg: 'country', type: 'string'},
+              {arg: 'serviceType', type: 'string'}],
+          returns: {arg: 'data', type: 'json'}
+    });
+
+  Member.remoteMethod('getArtistWithServices', {
+          http: {path: '/getArtistWithServices', verb: 'get'},
           accepts: [
               {arg: 'date', type: 'string'},
               {arg: 'country', type: 'string'},
