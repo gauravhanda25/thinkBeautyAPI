@@ -13,8 +13,8 @@
       "model": "Member",
       "foreignKey": "artistId",
       "through": ""
-    }
-    ,"hairs": {
+    },
+    "hairs": {
       "type": "belongsTo",
       "model": "Hair",
       "foreignKey": "subserviceId",
