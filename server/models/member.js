@@ -254,127 +254,200 @@ module.exports = function(Member) {
 
 
   }
-  Member.getArtistById =  function(date, artistId, cb) {
+  Member.getArtistById =  function(data, cb) {
       const {Role, Artistvacation} = app.models;
-      
-      if(date) {
-        Artistvacation.find({where: {and: [{starton: {lt : new Date(date)}}, {endon: {gt : new Date(date)}}]}}, function(err, vacation){
+      if(data.service == 'hair') {
+        data.service = 'hairs';
+      } else if(data.service == 'makeup') {
+        data.service = 'makeups'
+      } else {
+        data.service = 'nails'
+      }
+      if(data.date) {
+        Artistvacation.find({where: {and: [{starton: {lt : new Date(data.date)}}, {endon: {gt : new Date(data.date)}}]}}, function(err, vacation){
           if(vacation) {
             cb(null, {'message' : 'Arist is on vacation on selected date. Please try other date.'});
-          }
-        })
-      } else {
+          } else {            
  
-      let filterWithDate = {}
-      if(date) {
-        filterWithDate = {
-          relation: 'artistavailabilities', // include the owner object
-          scope: {
-            where: {date: date, days: "specificDate"}
-          }
-        };
-      }
-      Member.find({
-        include: [{
-                relation: 'artistservices', // include the owner object
-                scope: {
-                    where: {
-                        servicetype: 'home'
+              let filterWithDate = {}
+              if(data.date) {
+                filterWithDate = {
+                  relation: 'artistavailabilities', // include the owner object
+                  scope: {
+                    where: {date: data.date, days: "specificDate"}
+                  }
+                };
+              }
+              Member.find({
+                include: [{
+                        relation: 'artistservices', // include the owner object
+                        scope: {
+                            where: {
+                                servicetype: data.serviceType
+                            },
+                            include : {"relation" : data.service}
+                        }
+                    },
+                    filterWithDate,
+                    {
+                        relation: 'countries', // include the owner object
+                    },
+                    {
+                        relation: 'filestorages', // include the owner object
+                        scope: {
+                            where: {
+                                uploadType: 'main',
+                                status: 'active'
+                            }
+                        }
                     }
+                ],
+                where: {
+                    id: data.artistId
                 }
-            },
-            filterWithDate,
-            {
-                relation: 'countries', // include the owner object
-            },
-            {
-                relation: 'filestorages', // include the owner object
-                scope: {
-                    where: {
-                        uploadType: 'main',
-                        status: 'active'
+            }, function(err, result) {
+
+                if(result) {
+                    let resultData =  JSON.stringify(result);
+                    let finalData = JSON.parse(resultData)
+                      
+                    var newArray = finalData.filter(function (el) {
+                      let elArtistServices =  JSON.stringify(el.artistservices);
+                      let finalDataServices = JSON.parse(elArtistServices)
+                      el.artistservices = finalDataServices.filter(function(elInner){
+                          if(elInner[data.service]){
+                            return true;  
+                          }              
+                      })
+                      return el.artistservices.length > 0;  
+                    });
+                      
+                      cb(null, newArray);
+                } else {
+                    let dayNumber = moment(date).day();
+                    let weekends = [4,5];
+                    let whereDate = {}
+                    if(weekends.indexOf(dayNumber) > -1) {
+                      whereDate = {where: {memberId:artistId, days: "weekend"}}
+                    } else {
+                      whereDate = {where: {memberId:artistId, days: "working"}}
                     }
+                    if(data.date) {
+                      filterWithDate = {
+                        relation: 'artistavailabilities', // include the owner object
+                        scope: whereDate
+                      };
+                    }
+                    Member.find({
+                      include: [{
+                              relation: 'artistservices', // include the owner object
+                              scope: {
+                                  where: {
+                                      servicetype: data.serviceType
+                                  },
+                                  include : {"relation" : data.service}
+                              }
+                          },
+                          filterWithDate,
+                          {
+                              relation: 'countries', // include the owner object
+                          },
+                          {
+                              relation: 'filestorages', // include the owner object
+                              scope: {
+                                  where: {
+                                      uploadType: 'main',
+                                      status: 'active'
+                                  }
+                              }
+                          }
+                      ],
+                      where: {
+                          id: data.artistId
+                      }
+                  }, function(err, result) {
+
+                      if(result) {
+                          let resultData =  JSON.stringify(result);
+                          let finalData = JSON.parse(resultData)
+                            
+                          var newArray = finalData.filter(function (el) {
+                            let elArtistServices =  JSON.stringify(el.artistservices);
+                            let finalDataServices = JSON.parse(elArtistServices)
+                            el.artistservices = finalDataServices.filter(function(elInner){
+                                if(elInner[data.service]){
+                                  return true;  
+                                }              
+                            })
+                            return el.artistservices.length > 0;  
+                          });
+                            
+                            cb(null, newArray);
+                      } else {
+                        
+                      }
+                      
+                  });
                 }
-            }
-        ],
-        where: {
-            role_id: 2,
-            id: artistId
-        }
-    }, function(err, result) {
-
-        if(result) {
-            let data = JSON.stringify(result);
-            let finalData = JSON.parse(data)
-
-            var newArray = finalData.filter(function(el) {
-                return el.artistservices.length > 0;
+                
             });
 
-            return cb(null, newArray);
-        } else {
-            let dayNumber = moment(date).day();
-            let weekends = [4,5];
-            let whereDate = {}
-            if(weekends.indexOf(dayNumber) > -1) {
-              whereDate = {where: {memberId:artistId, days: "weekend"}}
-            } else {
-              whereDate = {where: {memberId:artistId, days: "working"}}
-            }
-            if(date) {
-              filterWithDate = {
-                relation: 'artistavailabilities', // include the owner object
-                scope: whereDate
-              };
-            }
-            Member.find({
-              include: [{
-                      relation: 'artistservices', // include the owner object
-                      scope: {
-                          where: {
-                              servicetype: 'home'
-                          }
-                      }
-                  },
-                  filterWithDate,
-                  {
-                      relation: 'countries', // include the owner object
-                  },
-                  {
-                      relation: 'filestorages', // include the owner object
-                      scope: {
-                          where: {
-                              uploadType: 'main',
-                              status: 'active'
-                          }
-                      }
-                  }
-              ],
-              where: {
-                  role_id: 2,
-                  id: artistId
-              }
-          }, function(err, result) {
-
-              if(result) {
-                  let data = JSON.stringify(result);
-                  let finalData = JSON.parse(data)
-
-                  var newArray = finalData.filter(function(el) {
-                      return el.artistservices.length > 0;
-                  });
-
-                  return  cb(null, newArray);
-              } else {
-                
-              }
-              
-          });
-        }
-        
-    });
-
+          
           }
+        })
+
+      } else {
+
+          Member.find({
+            include: [{
+                    relation: 'artistservices', // include the owner object
+                    scope: {
+                        where: {
+                            servicetype: data.serviceType
+                        },
+                        include : {"relation" : data.service}
+                    }
+                },
+                {relation : "artistavailabilities"},
+                {
+                    relation: 'countries', // include the owner object
+                },
+                {
+                    relation: 'filestorages', // include the owner object
+                    scope: {
+                        where: {
+                            uploadType: 'main',
+                            status: 'active'
+                        }
+                    }
+                }
+            ],
+            where: {
+                id: data.artistId
+            }
+        }, function(err, result) {
+            if(result) {
+                let resultData =  JSON.stringify(result);
+                let finalData = JSON.parse(resultData)
+                  
+                var newArray = finalData.filter(function (el) {
+                  let elArtistServices =  JSON.stringify(el.artistservices);
+                  let finalDataServices = JSON.parse(elArtistServices)
+                  el.artistservices = finalDataServices.filter(function(elInner){
+                      if(elInner[data.service]){
+                        return true;  
+                      }              
+                  })
+                  return el.artistservices.length > 0;  
+                });
+                  
+                  cb(null, newArray);
+            } else {
+              
+            }
+            
+        });
+      }
   }
   Member.remoteMethod('getArtists', {
           http: {path: '/getArtists', verb: 'get'},
@@ -397,8 +470,7 @@ module.exports = function(Member) {
   Member.remoteMethod('getArtistById', {
           http: {path: '/getArtistById', verb: 'post'},
           accepts: [
-              {arg: 'date', type: 'string'},
-              {arg: 'artistId', type: 'string'}],
+              {arg: 'data', type: 'object'}],
           returns: {arg: 'data', type: 'json'}
     });
 };
