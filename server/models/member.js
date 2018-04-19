@@ -265,10 +265,11 @@ module.exports = function(Member) {
       }
       if(data.date) {
         Artistvacation.find({where: {and: [{starton: {lt : new Date(data.date)}}, {endon: {gt : new Date(data.date)}}]}}, function(err, vacation){
-          if(vacation) {
+          if(vacation.length) {
+            console.log(vacation);
             cb(null, {'message' : 'Arist is on vacation on selected date. Please try other date.'});
           } else {            
- 
+              //console.log(date);
               let filterWithDate = {}
               if(data.date) {
                 filterWithDate = {
@@ -306,11 +307,13 @@ module.exports = function(Member) {
                     id: data.artistId
                 }
             }, function(err, result) {
-
-                if(result) {
-                    let resultData =  JSON.stringify(result);
-                    let finalData = JSON.parse(resultData)
-                      
+                console.log(result[0].artistavailabilities);
+                let resultData =  JSON.stringify(result);
+                let finalData = JSON.parse(resultData)
+                    
+                //console.log(finalData);
+                if(finalData[0].artistavailabilities.length) {
+                                           
                     var newArray = finalData.filter(function (el) {
                       let elArtistServices =  JSON.stringify(el.artistservices);
                       let finalDataServices = JSON.parse(elArtistServices)
@@ -324,14 +327,16 @@ module.exports = function(Member) {
                       
                       cb(null, newArray);
                 } else {
-                    let dayNumber = moment(date).day();
+
+                    let dayNumber = moment(data.date).day();
                     let weekends = [4,5];
                     let whereDate = {}
                     if(weekends.indexOf(dayNumber) > -1) {
-                      whereDate = {where: {memberId:artistId, days: "weekend"}}
+                      whereDate = {where: {memberId:data.artistId, days: "weekend"}}
                     } else {
-                      whereDate = {where: {memberId:artistId, days: "working"}}
+                      whereDate = {where: {memberId:data.artistId, days: "working"}}
                     }
+                    console.log(whereDate);
                     if(data.date) {
                       filterWithDate = {
                         relation: 'artistavailabilities', // include the owner object
@@ -397,7 +402,7 @@ module.exports = function(Member) {
         })
 
       } else {
-
+        console.log("I am in else");
           Member.find({
             include: [{
                     relation: 'artistservices', // include the owner object
@@ -470,7 +475,7 @@ module.exports = function(Member) {
   Member.remoteMethod('getArtistById', {
           http: {path: '/getArtistById', verb: 'post'},
           accepts: [
-              {arg: 'data', type: 'object'}],
+              {arg: '', type: 'object', http: { source: 'body' }}],
           returns: {arg: 'data', type: 'json'}
     });
 };
