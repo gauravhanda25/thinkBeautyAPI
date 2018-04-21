@@ -25,6 +25,12 @@
       "model": "Member",
       "foreignKey": "artistId",
       "through": ""
+    },
+    "vouchers": {
+      "type": "hasMany",
+      "model": "Voucher",
+      "foreignKey": "bookingId",
+      "through": ""
     }
   },
   "acls": [],

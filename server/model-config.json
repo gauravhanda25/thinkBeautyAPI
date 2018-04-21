@@ -165,5 +165,9 @@
   "Voucher": {
     "dataSource": "mongo",
     "public": true
+  },
+  "CustomerPoint": {
+    "dataSource": "mongo",
+    "public": true
   }
 }

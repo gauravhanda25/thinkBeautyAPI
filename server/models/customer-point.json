@@ -1,5 +1,5 @@
 {
-  "name": "Voucher",
+  "name": "CustomerPoint",
   "base": "PersistedModel",
   "idInjection": true,
   "options": {
@@ -18,12 +18,6 @@
       "type": "belongsTo",
       "model": "Member",
       "foreignKey": "artistId",
-      "through": ""
-    },
-    "bookings": {
-      "type": "belongsTo",
-      "model": "Booking",
-      "foreignKey": "bookingId",
       "through": ""
     }
   },
