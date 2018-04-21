@@ -358,7 +358,7 @@ module.exports = function(Member) {
 
               var breakStartHour = moment(newArray[0].artistavailabilities[0].breakfrom, ["h:mm A"]).format("HH"); 
               var breakStartHourMinute = moment(newArray[0].artistavailabilities[0].breakfrom, ["h:mm A"]).format("mm"); 
-              var breakEndHour = moment(newArray[0].artistavailabilities[0].breakto, ["h:mm A"]).format("mm"); 
+              var breakEndHour = moment(newArray[0].artistavailabilities[0].breakto, ["h:mm A"]).format("HH"); 
               var breakEndHourMinute = moment(newArray[0].artistavailabilities[0].breakto, ["h:mm A"]).format("mm"); 
 
               var startTime = moment().utc().set({hour:breakStartHour,minute:breakStartHourMinute});
