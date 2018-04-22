@@ -17,7 +17,7 @@ module.exports = function(Booking) {
 							});
 
 			var currentDate = moment(new Date());
-			var expiredOn = moment(currentDate).add(1, 'Y');
+			var expiredOn = moment(currentDate).add(1, 'Y').format('YYYY/mm/dd');
 			Voucher.create({"userId" : booking.userId, "artistId" : booking.artistId, "amount" : booking.totalPrice, bookingId: bookingId, bookingDate: booking.bookingDate, "expiredOn": expiredOn, voucherCode : voucherCode[0] })
 
 			cb(null, {'message' : 'booking cancelled successfully!'})
@@ -58,13 +58,46 @@ module.exports = function(Booking) {
 				   	} else if(booking.serviceType == 'salon') {
 				   		durationString = data.salonduration;
 				   	}
-				   		if(durationString != '' && durationString.indexOf('hr') > -1) {
-				   			//console.log(data.gccduration);
-				   			var duration = parseInt(durationString.replace(' hr', ''));
-				   			//console.log(duration)
+				   		if(durationString != '') {
+				   			console.log(durationString);
+
+				   			// booking is in hours and mins combination
+				   			if(durationString.indexOf('hr ') > -1  && durationString.indexOf('mins') > -1) {
+				   				durationString = durationString.replace(' hr ', '|');
+				   				durationString = durationString.replace(' mins', '');
+				   				durationString = durationString.split('|');
+
+				   				var hours = parseInt(durationString[0]);
+				   				var mins = parseInt(durationString[1]);
+				   				console.log(hours, mins);
+				   				var totalHours = hours + (mins/60);
+				   			} else if(durationString.indexOf('hr ') == -1  &&  durationString.indexOf('hrs') == -1 && durationString.indexOf('mins') > -1){
+				   				var mins = parseInt(durationString.replace(' mins', ''));
+				   				console.log( mins);
+				   				var totalHours = (mins/60);
+				   			} else if(durationString.indexOf('hr ') == -1  &&  durationString.indexOf('hrs') > -1 && durationString.indexOf('mins') > -1){
+				   				durationString = durationString.replace(' hrs', '|');
+				   				durationString = durationString.replace(' mins', '');
+				   				durationString = durationString.split('|');
+
+				   				var hours = parseInt(durationString[0]);
+				   				var mins = parseInt(durationString[1]);
+				   				console.log(hours, mins);
+				   				
+				   				var totalHours = hours + (mins/60);
+				   			} else if(durationString.indexOf('hr ') == -1  &&  durationString.indexOf('hrs') > -1 && durationString.indexOf('mins') == -1){
+				   				var hours = parseInt(durationString.replace(' hrs', ''));
+				   				console.log(hours);
+				   				var totalHours = hours;
+				   			} else if(durationString.indexOf('hr ') > -1  &&  durationString.indexOf('hrs') == -1 && durationString.indexOf('mins') == -1){
+				   				var hours = parseInt(durationString.replace(' hr', ''));
+				   				console.log(hours);
+				   				var totalHours = hours;
+				   			}
+				   			console.log("duration -- " + totalHours);
 
 				   			var startHour = moment(booking.bookingStartTime, ["h:mm A"]).format("HH"); 
-				   			var endHour = moment(booking.bookingStartTime, ["h:mm A"]).add(duration, 'hours');
+				   			var endHour = moment(booking.bookingStartTime, ["h:mm A"]).add(totalHours, 'hours');
 				   			var endHourFormatted = moment(endHour, ["h:mm A"]).format("HH"); 
 				            var startHourMinute = moment(booking.bookingStartTime, ["h:mm A"]).format("mm"); 
 				              
@@ -99,5 +132,4 @@ module.exports = function(Booking) {
     		}
     	}
     });
-
 };

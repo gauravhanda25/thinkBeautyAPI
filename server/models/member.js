@@ -258,6 +258,9 @@ module.exports = function(Member) {
   function getMemberDetails(type, data, cb){
     let filterWithDate = {}
     if(data.date) {
+
+      
+
       if(type == 'vacationFound') {
 
       } else if( type == 'specificDate') {
@@ -373,6 +376,7 @@ module.exports = function(Member) {
 
               newArray[0].artistavailabilities[0].breakSlots = breakTimeStops;
             }
+            
             cb(null, newArray);
           }
           
