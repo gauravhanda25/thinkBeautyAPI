@@ -65,7 +65,7 @@
     },
     "favourites": {
       "type": "hasMany",
-      "model": "favorite",
+      "model": "Favorite",
       "foreignKey": ""
     },
     "bookings": {

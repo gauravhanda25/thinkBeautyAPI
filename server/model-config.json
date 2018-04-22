@@ -146,7 +146,7 @@
     "dataSource": "mongo",
     "public": true
   },
-  "favorite": {
+  "Favorite": {
     "dataSource": "mongo",
     "public": true
   },
