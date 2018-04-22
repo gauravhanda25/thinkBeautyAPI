@@ -258,9 +258,7 @@ module.exports = function(Member) {
   function getMemberDetails(type, data, cb){
     let filterWithDate = {}
     if(data.date) {
-
-      
-
+      console.log(type);
       if(type == 'vacationFound') {
 
       } else if( type == 'specificDate') {
@@ -269,25 +267,26 @@ module.exports = function(Member) {
             scope: {
               where: {date: data.date, days: "specificDate"}
             }
-          };      
-        } else if( type == 'otherDays') {
-          let dayNumber = moment(data.date).day();
-          let weekends = [4,5];
-          let whereDate = {}
-          if(weekends.indexOf(dayNumber) > -1) {
-            whereDate = {where: {memberId:data.artistId, days: "weekend"}}
-          } else {
-            whereDate = {where: {memberId:data.artistId, days: "working"}}
-          }
-          console.log(whereDate);
-          if(data.date) {
-            filterWithDate = {
-              relation: 'artistavailabilities', // include the owner object
-              scope: whereDate
-            };
-          }
+          };
+          console.log(filterWithDate);      
+      } else if( type == 'otherDays') {
+        let dayNumber = moment(data.date).day();
+        let weekends = [4,5];
+        let whereDate = {}
+        if(weekends.indexOf(dayNumber) > -1) {
+          whereDate = {where: {memberId:data.artistId, days: "weekend"}}
+        } else {
+          whereDate = {where: {memberId:data.artistId, days: "working"}}
         }
-      }    
+        console.log(whereDate);
+        if(data.date) {
+          filterWithDate = {
+            relation: 'artistavailabilities', // include the owner object
+            scope: whereDate
+          };
+        }
+      }
+    }    
 
     Member.find({
       include: [{
@@ -321,21 +320,26 @@ module.exports = function(Member) {
         if(result) {
           let resultData =  JSON.stringify(result);
           let finalData = JSON.parse(resultData)
-            
+          console.log(finalData[0].artistservices);
+          console.log(finalData[0].artistavailabilities);
           var newArray = finalData.filter(function (el) {
             let elArtistServices =  JSON.stringify(el.artistservices);
             let finalDataServices = JSON.parse(elArtistServices)
+            console.log('I am here');
+            console.log(finalDataServices);
             el.artistservices = finalDataServices.filter(function(elInner){
                 if(elInner[data.service]){
                   return true;  
                 }              
             })
-            return el.artistservices.length > 0;  
+            return true;
+            //return el.artistservices.length > 0;  
           });
+          console.log(newArray);
           if(type == 'vacationFound') {
               newArray[0].artistavailabilities = [{"message" : "Artist is on vacation on selected date. Please select other date."}];  
               cb(null, newArray);
-          } else if(type == 'specificDate' && newArray[0].artistavailabilities.length == 0) {
+          } else if(type == 'specificDate' && newArray.length == 0) {
               getMemberDetails('otherDays', data, cb);
           } else {
             if(newArray[0].artistavailabilities && newArray[0].artistavailabilities.length) {
@@ -375,8 +379,17 @@ module.exports = function(Member) {
               }
 
               newArray[0].artistavailabilities[0].breakSlots = breakTimeStops;
+            } 
+
+
+            if(!newArray[0].artistservices || newArray[0].artistservices.length == 0) {
+               newArray[0].artistservices = [{"message" : "This artist dont provide this type of service"}]; 
             }
-            
+
+            if(!newArray[0].artistavailabilities || newArray[0].artistavailabilities.length == 0){
+               newArray[0].artistavailabilities = [{"message" : "No availability slot found  for this service type"}]; 
+            }
+
             cb(null, newArray);
           }
           
