@@ -41,7 +41,7 @@
     "artistservices": {
       "type": "hasMany",
       "model": "Artistservices",
-      "foreignKey": "artistId"
+      "foreignKey": "memberId"
     },
     "filestorages": {
       "type": "hasMany",

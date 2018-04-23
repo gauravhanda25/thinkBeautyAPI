@@ -11,7 +11,7 @@
     "members": {
       "type": "belongsTo",
       "model": "Member",
-      "foreignKey": "artistId",
+      "foreignKey": "memberId",
       "through": ""
     },
     "hairs": {
