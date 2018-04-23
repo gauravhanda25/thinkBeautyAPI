@@ -18,7 +18,7 @@ module.exports = function(Booking) {
 
 			var currentDate = moment(new Date());
 			var expiredOn = moment(currentDate).add(1, 'Y').format('YYYY/mm/dd');
-			Voucher.create({"userId" : booking.userId, "artistId" : booking.artistId, "amount" : booking.totalPrice, bookingId: bookingId, bookingDate: booking.bookingDate, "expiredOn": expiredOn, voucherCode : voucherCode[0] })
+			Voucher.create({"userId" : booking.userId, "artistId" : booking.artistId, "amount" : booking.totalPrice, bookingId: bookingId, bookingDate: booking.bookingDate, "expiredOn": expiredOn, voucherCode : voucherCode[0], status : "active" })
 
 			cb(null, {'message' : 'booking cancelled successfully!'})
 		})
@@ -158,6 +158,31 @@ module.exports = function(Booking) {
 	}
 	Booking.remoteMethod('verifyBooking', {
           http: {path: '/verifyBooking', verb: 'post'},
+          accepts: [
+              {arg: '', type: 'object', http: { source: 'body' }}],
+          returns: {arg: 'data', type: 'json'}
+    });
+
+
+    Booking.applyVoucher = function(data, cb) {
+		const {Voucher} = app.models;
+		Voucher.findOne({where : {id : data.id, artistId : data.artistId, userId: data.userId}}, function(err, data){
+			if(data) {
+				var date = new Date();
+				var expiryDate = new Date(data.expiredOn);
+				if(expiryDate > date){
+					cb(null, {"message" : "Voucher exists", price : data.amount, status : 1});
+				} else {
+					cb(null, {"message" : "Voucher expired.", price : data.amount, status : 0});
+				}
+				
+			} else {
+				cb(null, {"message" : "Applied voucher do not exists .", price : 0, status : 3});
+			}
+		})
+	}
+	Booking.remoteMethod('applyVoucher', {
+          http: {path: '/applyVoucher', verb: 'post'},
           accepts: [
               {arg: '', type: 'object', http: { source: 'body' }}],
           returns: {arg: 'data', type: 'json'}

@@ -7,6 +7,7 @@ const ejs = require('ejs');
 const Fs = require('fs');
 const app = require('../server.js');
 const verifyAccountEmail = require('../templates/emails/verify-account-email.js');
+const landingRegistration = require('../templates/emails/landing-registration.js');
 module.exports = function(Member) {
   
 
@@ -19,6 +20,25 @@ module.exports = function(Member) {
               principalType: RoleMapping.USER,
               principalId: memberInstance.id
           });
+      });
+
+
+      console.log(memberInstance);
+      const template = landingRegistration(memberInstance);
+      const {Email} = app.models;
+      const subject = 'Welcome to Think Beauty!';
+      Email.send({
+        to: memberInstance.email, from: app.get('email'), subject, html: template
+      }, (err) =>
+      {
+        if (err)
+        {
+          return reject(err);
+        }
+        // email sent
+        //return resolve();
+        console.log('> Email Sent!!')
+        next();
       });
    
     /*var options = {
@@ -41,7 +61,7 @@ module.exports = function(Member) {
 
     });*/
 
-    new Promise((resolve, reject) =>
+    /*new Promise((resolve, reject) =>
       {
         Member.generateVerificationToken(memberInstance, null, async (errToken, token) =>
         {
@@ -83,7 +103,7 @@ module.exports = function(Member) {
             return reject(err);
           }
         }); // generate token
-      });
+      });*/
   });
 
 
