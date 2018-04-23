@@ -258,7 +258,7 @@ module.exports = function(Member) {
         let data =  JSON.stringify(result);
         let finalData = JSON.parse(data)
           
-        /*var newArray = finalData.filter(function (el) {
+        var newArray = finalData.filter(function (el) {
           let elArtistServices =  JSON.stringify(el.artistservices);
           let finalDataServices = JSON.parse(elArtistServices)
           el.artistservices = finalDataServices.filter(function(elInner){
@@ -269,9 +269,9 @@ module.exports = function(Member) {
               }           
           })
           return el.artistservices.length > 0;  
-        });*/
+        });
           
-          cb(null, finalData);
+          cb(null, newArray);
       });
 
 
