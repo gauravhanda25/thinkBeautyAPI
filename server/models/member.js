@@ -339,7 +339,7 @@ module.exports = function(Member) {
           let resultData =  JSON.stringify(result);
           let finalData = JSON.parse(resultData);
           if(type != '') {
-            
+            var newArray = finalData;
             console.log(finalData);
             var newArray = finalData.filter(function (el) {
               let elArtistServices =  JSON.stringify(el.artistservices);
@@ -347,7 +347,10 @@ module.exports = function(Member) {
               el.artistservices = finalDataServices.filter(function(elInner){
                   if(elInner[data.service]){
                     return true;  
-                  }              
+                  } else {
+                    elInner[data.service] = {};
+                    return true;
+                  }        
               })
               return el.artistservices.length > 0;  
             });
@@ -360,8 +363,6 @@ module.exports = function(Member) {
           } else if(type == 'specificDate' && newArray[0].artistavailabilities.length == 0) {
               getMemberDetails('otherDays', data, cb);
           } else {
-            console.log(filterWithDate);
-            console.log(type);
             if(type != '' && newArray[0].artistavailabilities && newArray[0].artistavailabilities.length) {
 
               var startHour = moment(newArray[0].artistavailabilities[0].hoursfrom, ["h:mm A"]).format("HH"); 
