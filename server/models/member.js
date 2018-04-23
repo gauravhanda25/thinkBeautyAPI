@@ -264,7 +264,9 @@ module.exports = function(Member) {
           el.artistservices = finalDataServices.filter(function(elInner){
               if(elInner[serviceType]){
                 return true;  
-              }              
+              } else {
+                elInner[serviceType] = {}
+              }           
           })
           return el.artistservices.length > 0;  
         });
