@@ -14,13 +14,12 @@
     "connector": "mail",
     "transports": [
       {
-        "type": "SMTP",
-        "host": "smtp.gmail.com",
-        "secure": true,
-        "port": 465,
+        "type": "direct",
+        "host": "smtp-mail.outlook.com",
+        "port": 25,
         "auth": {
-          "user": "gaggyhanda25@gmail.com",
-          "pass": "gaggyH0725"
+          "user": "info@thinkbeauty.net",
+          "pass": "Thinkbeauty91*"
         }
       }
     ]

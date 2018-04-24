@@ -61,7 +61,7 @@ module.exports = function(Member) {
 
     });*/
 
-    /*new Promise((resolve, reject) =>
+    new Promise((resolve, reject) =>
       {
         Member.generateVerificationToken(memberInstance, null, async (errToken, token) =>
         {
@@ -103,7 +103,7 @@ module.exports = function(Member) {
             return reject(err);
           }
         }); // generate token
-      });*/
+      });
   });
 
 

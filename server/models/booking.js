@@ -54,12 +54,8 @@ module.exports = function(Booking) {
 
 				   Artistservices.findOne(whereObj, function(err, data){
 				   	console.log(data);
-				   	var durationString = '';
-				   	if(booking.serviceType == 'home') {
-				   		durationString = data.homeduration;
-				   	} else if(booking.serviceType == 'salon') {
-				   		durationString = data.salonduration;
-				   	}
+				   	var durationString = (data.duration) ? data.duration : '';
+				   	
 			   		if(durationString != '') {
 			   			console.log(durationString);
 
@@ -144,14 +140,92 @@ module.exports = function(Booking) {
 
 	Booking.verifyBooking = function(data, cb) {
 		console.log(data);
-		const {BookingSlot} = app.models;
+		const {BookingSlot, Artistservices} = app.models;
 		if(data.serviceType == 'gcc') {
 			BookingSlot.findOne({where : {bookingDate : data.bookingDate, artistId : data.artistId}}, function(err, data){
 				console.log(err, data);
 				if(data) {
-					cb(null, {"message" : "Artist is already booked for this date", "status" : "cant book"});
+					cb(null, {"message" : "Artist is already booked for this date", "status" : 0});
 				} else {
-					cb(null, {"message" : "No booking found on this date", "status" : "can book"});
+					cb(null, {"message" : "No booking found on this date", "status" : 1});
+				}
+			})
+		} else{
+			BookingSlot.findOne({where : {bookingDate : data.bookingDate, artistId : data.artistId}}, function(err, slotsData){
+				if(data) {
+					Artistservices.findOne({where:{id : data.artistServiceId[0].serviceId}}, function(err, serviceData){
+						console.log(serviceData)
+						var durationString = (serviceData.duration) ? serviceData.duration : '';
+				   	
+				   		if(durationString != '') {
+				   			console.log(durationString);
+
+				   			// booking is in hours and mins combination
+				   			if(durationString.indexOf('hr ') > -1  && durationString.indexOf('mins') > -1) {
+				   				durationString = durationString.replace(' hr ', '|');
+				   				durationString = durationString.replace(' mins', '');
+				   				durationString = durationString.split('|');
+
+				   				var hours = parseInt(durationString[0]);
+				   				var mins = parseInt(durationString[1]);
+				   				console.log(hours, mins);
+				   				var totalHours = hours + (mins/60);
+				   			} else if(durationString.indexOf('hr ') == -1  &&  durationString.indexOf('hrs') == -1 && durationString.indexOf('mins') > -1){
+				   				var mins = parseInt(durationString.replace(' mins', ''));
+				   				console.log( mins);
+				   				var totalHours = (mins/60);
+				   			} else if(durationString.indexOf('hr ') == -1  &&  durationString.indexOf('hrs') > -1 && durationString.indexOf('mins') > -1){
+				   				durationString = durationString.replace(' hrs', '|');
+				   				durationString = durationString.replace(' mins', '');
+				   				durationString = durationString.split('|');
+
+				   				var hours = parseInt(durationString[0]);
+				   				var mins = parseInt(durationString[1]);
+				   				console.log(hours, mins);
+
+				   				var totalHours = hours + (mins/60);
+				   			} else if(durationString.indexOf('hr ') == -1  &&  durationString.indexOf('hrs') > -1 && durationString.indexOf('mins') == -1){
+				   				var hours = parseInt(durationString.replace(' hrs', ''));
+				   				console.log(hours);
+				   				var totalHours = hours;
+				   			} else if(durationString.indexOf('hr ') > -1  &&  durationString.indexOf('hrs') == -1 && durationString.indexOf('mins') == -1){
+				   				var hours = parseInt(durationString.replace(' hr', ''));
+				   				console.log(hours);
+				   				var totalHours = hours;
+				   			}
+				   			console.log("duration -- " + totalHours);
+
+				   			var startHour = moment(data.bookingStartTime, ["h:mm A"]).format("HH"); 
+				   			var endHour = moment(data.bookingStartTime, ["h:mm A"]).add(totalHours, 'hours');
+				   			var endHourFormatted = moment(endHour, ["h:mm A"]).format("HH"); 
+				            var startHourMinute = moment(data.bookingStartTime, ["h:mm A"]).format("mm"); 
+				              
+				            //console.log(startHour, endHour, endHourFormatted)
+				            var endHourMinute = moment(endHour, ["h:mm A"]).format("mm");
+
+				   			var startTime = moment().utc().set({hour:startHour,minute:startHourMinute});
+							var endTime = moment().utc().set({hour:endHourFormatted,minute:endHourMinute});
+
+							var timeStops = [];
+
+							while(startTime <= endTime) {
+								timeStops.push(new moment(startTime).format('HH:mm'));
+								startTime.add(30, 'minutes');
+							}
+							//slots.push(timeStops);
+							console.log("I am in if")
+							let slots = slotsData.slots;
+							let found = timeStops.some(r=> slots.includes(r));
+							if(found) {
+								cb(null, {"message" : "Artist is already booked for this date", "status" : 0});
+							} else {
+								cb(null, {"message" : "No booking found on this slot", "status" : 1});
+							}
+				   		} 
+					})
+					// check slots are matching bookingTime
+				} else {
+					cb(null, {"message" : "No booking found on this date", "status" : 1});
 				}
 			})
 		}
