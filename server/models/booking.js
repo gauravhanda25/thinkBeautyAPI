@@ -139,9 +139,10 @@ module.exports = function(Booking) {
 	
 
 	Booking.verifyBooking = function(data, cb) {
-		console.log(data);
+		//console.log(data);
 		const {BookingSlot, Artistservices} = app.models;
-		if(data.serviceType == 'gcc') {
+		if(data.servicetype == 'gcc') {
+			console.log('I am in if');
 			BookingSlot.findOne({where : {bookingDate : data.bookingDate, artistId : data.artistId}}, function(err, data){
 				console.log(err, data);
 				if(data) {
@@ -151,12 +152,15 @@ module.exports = function(Booking) {
 				}
 			})
 		} else{
+			console.log('I am in else');
 			BookingSlot.findOne({where : {bookingDate : data.bookingDate, artistId : data.artistId}}, function(err, slotsData){
-				if(data) {
+				if(slotsData) {
+					console.log(slotsData);
+					console.log("Service id is >", data.artistServiceId[0].serviceId);
 					Artistservices.findOne({where:{id : data.artistServiceId[0].serviceId}}, function(err, serviceData){
 						console.log(serviceData)
 						var durationString = (serviceData.duration) ? serviceData.duration : '';
-				   	
+				   		console.log(durationString);
 				   		if(durationString != '') {
 				   			console.log(durationString);
 
@@ -188,7 +192,7 @@ module.exports = function(Booking) {
 				   				var hours = parseInt(durationString.replace(' hrs', ''));
 				   				console.log(hours);
 				   				var totalHours = hours;
-				   			} else if(durationString.indexOf('hr ') > -1  &&  durationString.indexOf('hrs') == -1 && durationString.indexOf('mins') == -1){
+				   			} else if(durationString.indexOf(' hr') > -1  &&  durationString.indexOf('hrs') == -1 && durationString.indexOf('mins') == -1){
 				   				var hours = parseInt(durationString.replace(' hr', ''));
 				   				console.log(hours);
 				   				var totalHours = hours;
@@ -213,14 +217,17 @@ module.exports = function(Booking) {
 								startTime.add(30, 'minutes');
 							}
 							//slots.push(timeStops);
-							console.log("I am in if")
+							
 							let slots = slotsData.slots;
 							let found = timeStops.some(r=> slots.includes(r));
+							console.log(slots, found)
 							if(found) {
 								cb(null, {"message" : "Artist is already booked for this date", "status" : 0});
 							} else {
 								cb(null, {"message" : "No booking found on this slot", "status" : 1});
 							}
+				   		} else {
+				   			cb(null, {"message" : "No booking found on this slot", "status" : 1});
 				   		} 
 					})
 					// check slots are matching bookingTime
