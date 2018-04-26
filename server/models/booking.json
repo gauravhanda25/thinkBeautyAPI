@@ -11,7 +11,11 @@
       "modified": "modified"
     }
   },
-  "properties": {},
+  "properties": {
+    "bookingDate": {
+      "type": "Date"
+    }
+  },
   "validations": [],
   "relations": {
     "members": {
