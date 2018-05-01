@@ -155,14 +155,9 @@ module.exports = function(Booking) {
 			console.log('I am in else');
 			BookingSlot.findOne({where : {bookingDate : data.bookingDate, artistId : data.artistId}}, function(err, slotsData){
 				if(slotsData) {
-					console.log(slotsData);
-					console.log("Service id is >", data.artistServiceId[0].serviceId);
 					Artistservices.findOne({where:{id : data.artistServiceId[0].serviceId}}, function(err, serviceData){
-						console.log(serviceData)
 						var durationString = (serviceData.duration) ? serviceData.duration : '';
-				   		console.log(durationString);
 				   		if(durationString != '') {
-				   			console.log(durationString);
 
 				   			// booking is in hours and mins combination
 				   			if(durationString.indexOf('hr ') > -1  && durationString.indexOf('mins') > -1) {
