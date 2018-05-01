@@ -60,7 +60,7 @@ module.exports = function(Member) {
 
       console.log('> verification email sent:', response);
       //next(response);
-     	//return response;
+      //return response;
       next();
 
     });*/
@@ -130,10 +130,10 @@ module.exports = function(Member) {
                   var randomstring = Math.random().toString(36).slice(-8);
                   memberInstance.password = randomstring;
                   memberInstance.save();
-                  const url = 'http://localhost:4200/#/verify-email/' + memberInstance.id.toString() +
+                  const url = 'http://www.thinkbeauty.net:3000/#/panel/verify-email/' + memberInstance.id.toString() +
                     '/' + token;
                   const pass = memberInstance.password;
-                  const template = verifyAccountEmail(url, randomstring, memberInstance.email, memberInstance.name, 'http://localhost:4200/#/artist');
+                  const template = verifyAccountEmail(url, randomstring, memberInstance.email, memberInstance.name, 'http://www.thinkbeauty.net:3000/#/panel/artist');
                   const {Email} = app.models;
                   const subject = 'Verify your email to get started';
                   inlineCss(template,  { url: 'http://example.com/mushroom'})
