@@ -73,9 +73,12 @@ module.exports = function(url, pass, email, username, loginUrl)
 
             <div class="content">
                <img src="http://www.thinkbeauty.net/images/main-bg.jpg">
-               <p style="text-align: center; margin: 20px 0;">Please Click on confirm eamil button bellow so you can explore the available services among our platform and enjoy having your desired services done with ease & efficiency !</p>
+               <p style="text-align: center; margin: 20px 0;">Please Click on confirm email button bellow so you can explore the available services among our platform and enjoy having your desired services done with ease & efficiency !</p>
                <p style="text-align: center; color: #ceb26f;"><strong style="color: #ceb26f;">Get started with a new beautiful experience now !</strong></p>
                <a class="btn" href="${url}">Confirm Email</a>
+               <p style="text-align: center; margin: 20px 0;">After Confirming below are the credentials to use for login into your account.</p>
+               <p>Username : ${username}
+               <p>Password : ${pass}
                <img src="http://www.thinkbeauty.net/images/footer.jpg">
                <p style="text-align: center; margin-top: 20px; margin-bottom: 0;"><strong><a style="color: #000;" href="http://www.thinkbeauty.net/">www.thinkbeauty.net</a></strong><br>Copyright 2018 Think Beauty. All right reserved</p>
             </div>
