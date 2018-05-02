@@ -13,11 +13,7 @@ module.exports = function(Member) {
   
 
   //send verification email after registration
-  Member.beforeRemote('create', function(context, memberInstance, next) {
-        var randomstring = Math.random().toString(36).slice(-8);
-        context.args.data.password = randomstring;
-        next();      
-  })
+  
   Member.afterRemote('create', function(context, memberInstance, next) {
     console.log('> member.afterRemote triggered');
       const {Role, RoleMapping} = app.models;
