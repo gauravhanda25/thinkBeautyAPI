@@ -130,7 +130,7 @@ module.exports = function(Member) {
                   var randomstring = Math.random().toString(36).slice(-8);
                   memberInstance.password = randomstring;
                   memberInstance.save();
-                  const url = 'http://www.thinkbeauty.net:3000/#/panel/verify-email/' + memberInstance.id.toString() +
+                  const url = 'http://www.thinkbeauty.net/panel/#/verify-email/' + memberInstance.id.toString() +
                     '/' + token;
                   const pass = memberInstance.password;
                   const template = verifyAccountEmail(url, randomstring, memberInstance.email, memberInstance.name, 'http://www.thinkbeauty.net:3000/#/panel/artist');
