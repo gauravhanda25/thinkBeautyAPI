@@ -70,7 +70,7 @@ module.exports = function(Member) {
                   const url = 'http://www.thinkbeauty.net/panel/#/verify-email/' + memberInstance.id.toString() +
                     '/' + token;
                   //const pass = memberInstance.password;
-                  const template = verifyAccountEmail(url, context.args.data.password;, memberInstance.email, memberInstance.name, 'http://www.thinkbeauty.net:3000/#/panel/artist');
+                  const template = verifyAccountEmail(url, context.args.data.password, memberInstance.email, memberInstance.name, 'http://www.thinkbeauty.net:3000/#/panel/artist');
                   const {Email} = app.models;
                   const subject = 'Verify your email to get started';
                   inlineCss(template,  { url: 'http://example.com/mushroom'})
