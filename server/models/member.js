@@ -95,7 +95,7 @@ module.exports = function(Member) {
               }
             });
       }
-      if((memberInstance.role_id == 2 || memberInstance.role_id == 3) && memberInstance.) {
+      if((memberInstance.role_id == 2 || memberInstance.role_id == 3) && memberInstance.status == 'active') {
           Member.generateVerificationToken(memberInstance, null,  (errToken, token) =>
             {
               if (errToken)
