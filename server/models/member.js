@@ -13,9 +13,9 @@ module.exports = function(Member) {
   
 
   //send verification email after registration
-  
+
   Member.afterRemote('create', function(context, memberInstance, next) {
-    console.log('> member.afterRemote triggered');
+      console.log('> member.afterRemote triggered');
       const {Role, RoleMapping} = app.models;
       Role.findOne({where: {role_id: memberInstance.role_id}}, function(err, role){
           role.principals.create({
@@ -58,8 +58,8 @@ module.exports = function(Member) {
                   // update verification token and organization id
                   memberInstance.verificationToken = token;
                   memberInstance.emailSent = true;
-                  var randomstring = Math.random().toString(36).slice(-8);
-                  memberInstance.password = randomstring;
+                  /*var randomstring = Math.random().toString(36).slice(-8);
+                  memberInstance.password = randomstring;*/
                   memberInstance.save();
                   const url = 'http://www.thinkbeauty.net/panel/#/verify-email/' + memberInstance.id.toString() +
                     '/' + token;
@@ -94,6 +94,61 @@ module.exports = function(Member) {
                 }
               }
             });
+      }
+      if((memberInstance.role_id == 2 || memberInstance.role_id == 3) && memberInstance.status == 'active') {
+          Member.generateVerificationToken(memberInstance, null,  (errToken, token) =>
+            {
+              if (errToken)
+              {
+                console.log(errToken);
+              } else {
+                try
+                {
+                  // update verification token and organization id
+                  memberInstance.verificationToken = token;
+                  memberInstance.emailSent = true;
+                  if(!memberInstance.password) {
+                    var randomstring = Math.random().toString(36).slice(-8);
+                    memberInstance.password = randomstring;
+                  } else {
+                    var randomstring = memberInstance.password;
+                  }
+                  
+                  memberInstance.save();
+                  const url = 'http://www.thinkbeauty.net/panel/#/verify-email/' + memberInstance.id.toString() +
+                    '/' + token;
+                  //const pass = memberInstance.password;
+                  const template = verifyAccountEmail(url, randomstring, memberInstance.email, memberInstance.name, 'http://www.thinkbeauty.net:3000/#/panel/artist');
+                  const {Email} = app.models;
+                  const subject = 'Verify your email to get started';
+                  inlineCss(template,  { url: 'http://example.com/mushroom'})
+                  .then(function(html) {
+                      Email.send({
+                        to: memberInstance.email, from: app.get('email'), subject, html: html
+                      }, (err) =>
+                      {
+                        if (err)
+                        {
+                          console.log('ERROR sending account verification', err);
+                        }
+                        // email sent
+                        //return resolve();
+                        console.log('> Email Sent to !! >>'+memberInstance.email)
+                        //next();
+                      });
+                    });
+                  //next();
+                  //return resolve();
+                }
+                catch (err)
+                {
+
+                  console.log('ERROR sending account verification', err);
+                  //return reject(err);
+                }
+              }
+            });
+
       }
    
     /*var options = {
@@ -163,14 +218,10 @@ module.exports = function(Member) {
 
   Member.observe('after save', function(ctx, next) {
   const member = ctx.instance || ctx.data;
-    console.log("member is");
-    console.log(member);
     Member.findOne({where: {email: member.email}}, function(err, memberInstance){
       
-        if (!ctx.isNewInstance && (member.role_id==2 || member.role_id==2)) {
-          if(member.status == 'active' && member.emailVerified == false && !member.emailSent) {
-            console.log("memberInstance is");
-            console.log(memberInstance);
+        if (!ctx.isNewInstance && (member.role_id==2 || member.role_id == 3)) {
+          if(member.status == 'active' && member.emailVerified == false && !memberInstance.hasOwnProperty('emailSent')) {
               Member.generateVerificationToken(memberInstance, null,  (errToken, token) =>
             {
               if (errToken)
@@ -458,29 +509,33 @@ module.exports = function(Member) {
           let finalData = JSON.parse(resultData);
           if(type != '') {
             var newArray = finalData;
-            console.log(finalData);
-            var newArray = finalData.filter(function (el) {
+              newArray = finalData.filter(function (el) {
               let elArtistServices =  JSON.stringify(el.artistservices);
               let finalDataServices = JSON.parse(elArtistServices)
               el.artistservices = finalDataServices.filter(function(elInner){
                   if(elInner[data.service]){
                     return true;  
-                  } else {
+                  }/* else {
                     elInner[data.service] = {};
                     return true;
-                  }        
+                  } */       
               })
               return el.artistservices.length > 0;  
             });
+            console.log(newArray);
+            newArray = newArray.filter(function (el) {
+              return el.artistavailabilities.length > 0;  
+            });
+            console.log(newArray);
           } else {
             var newArray = finalData;
           }
-          if(type == 'vacationFound') {
+          if(type == 'vacationFound' && newArray.length) {
               newArray[0].artistavailabilities = [{"message" : "Artist is on vacation on selected date. Please select other date.", status : 2}];  
               cb(null, newArray);
-          } else if(type == 'specificDate' && newArray[0].artistavailabilities.length == 0) {
+          } else if(type == 'specificDate' && newArray.length == 0) {
               getMemberDetails('otherDays', data, cb);
-          } else {
+          } else if(newArray.length) {
             if(type != '' && newArray[0].artistavailabilities && newArray[0].artistavailabilities.length) {
 
               var startHour = moment(newArray[0].artistavailabilities[0].hoursfrom, ["h:mm A"]).format("HH"); 
@@ -524,6 +579,8 @@ module.exports = function(Member) {
             if(typeof newArray[0]['artistavailabilities'] == 'undefined') {
               newArray[0]['artistavailabilities'] = [{"message" : "There is no availability for this servicetype.", status : 1}];
             }
+            cb(null, newArray);
+          } else {
             cb(null, newArray);
           }
           
