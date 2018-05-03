@@ -15,7 +15,7 @@ module.exports = function(Member) {
   //send verification email after registration
 
   Member.afterRemote('create', function(context, memberInstance, next) {
-    console.log('> member.afterRemote triggered');
+      console.log('> member.afterRemote triggered');
       const {Role, RoleMapping} = app.models;
       Role.findOne({where: {role_id: memberInstance.role_id}}, function(err, role){
           role.principals.create({
@@ -509,8 +509,7 @@ module.exports = function(Member) {
           let finalData = JSON.parse(resultData);
           if(type != '') {
             var newArray = finalData;
-            console.log(finalData);
-            var newArray = finalData.filter(function (el) {
+              newArray = finalData.filter(function (el) {
               let elArtistServices =  JSON.stringify(el.artistservices);
               let finalDataServices = JSON.parse(elArtistServices)
               el.artistservices = finalDataServices.filter(function(elInner){
@@ -523,15 +522,20 @@ module.exports = function(Member) {
               })
               return el.artistservices.length > 0;  
             });
+            console.log(newArray);
+            newArray = newArray.filter(function (el) {
+              return el.artistavailabilities.length > 0;  
+            });
+            console.log(newArray);
           } else {
             var newArray = finalData;
           }
-          if(type == 'vacationFound') {
+          if(type == 'vacationFound' && newArray.length) {
               newArray[0].artistavailabilities = [{"message" : "Artist is on vacation on selected date. Please select other date.", status : 2}];  
               cb(null, newArray);
-          } else if(type == 'specificDate' && newArray[0].artistavailabilities.length == 0) {
+          } else if(type == 'specificDate' && newArray.length == 0) {
               getMemberDetails('otherDays', data, cb);
-          } else {
+          } else if(newArray.length) {
             if(type != '' && newArray[0].artistavailabilities && newArray[0].artistavailabilities.length) {
 
               var startHour = moment(newArray[0].artistavailabilities[0].hoursfrom, ["h:mm A"]).format("HH"); 
@@ -575,6 +579,8 @@ module.exports = function(Member) {
             if(typeof newArray[0]['artistavailabilities'] == 'undefined') {
               newArray[0]['artistavailabilities'] = [{"message" : "There is no availability for this servicetype.", status : 1}];
             }
+            cb(null, newArray);
+          } else {
             cb(null, newArray);
           }
           
