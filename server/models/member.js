@@ -13,7 +13,7 @@ module.exports = function(Member) {
   
 
   //send verification email after registration
-  
+
   Member.afterRemote('create', function(context, memberInstance, next) {
     console.log('> member.afterRemote triggered');
       const {Role, RoleMapping} = app.models;
@@ -48,6 +48,55 @@ module.exports = function(Member) {
 
       if(memberInstance.role_id == 4) {
          Member.generateVerificationToken(memberInstance, null,  (errToken, token) =>
+            {
+              if (errToken)
+              {
+                console.log(errToken);
+              } else {
+                try
+                {
+                  // update verification token and organization id
+                  memberInstance.verificationToken = token;
+                  memberInstance.emailSent = true;
+                  /*var randomstring = Math.random().toString(36).slice(-8);
+                  memberInstance.password = randomstring;*/
+                  memberInstance.save();
+                  const url = 'http://www.thinkbeauty.net/panel/#/verify-email/' + memberInstance.id.toString() +
+                    '/' + token;
+                  //const pass = memberInstance.password;
+                  const template = verifyAccountEmail(url, randomstring, memberInstance.email, memberInstance.name, 'http://www.thinkbeauty.net:3000/#/panel/artist');
+                  const {Email} = app.models;
+                  const subject = 'Verify your email to get started';
+                  inlineCss(template,  { url: 'http://example.com/mushroom'})
+                  .then(function(html) {
+                      Email.send({
+                        to: memberInstance.email, from: app.get('email'), subject, html: html
+                      }, (err) =>
+                      {
+                        if (err)
+                        {
+                          console.log('ERROR sending account verification', err);
+                        }
+                        // email sent
+                        //return resolve();
+                        console.log('> Email Sent to !! >>'+memberInstance.email)
+                        //next();
+                      });
+                    });
+                  //next();
+                  //return resolve();
+                }
+                catch (err)
+                {
+
+                  console.log('ERROR sending account verification', err);
+                  //return reject(err);
+                }
+              }
+            });
+      }
+      if((memberInstance.role_id == 2 || memberInstance.role_id == 3) && memberInstance.) {
+          Member.generateVerificationToken(memberInstance, null,  (errToken, token) =>
             {
               if (errToken)
               {
@@ -94,6 +143,7 @@ module.exports = function(Member) {
                 }
               }
             });
+
       }
    
     /*var options = {
@@ -163,14 +213,10 @@ module.exports = function(Member) {
 
   Member.observe('after save', function(ctx, next) {
   const member = ctx.instance || ctx.data;
-    console.log("member is");
-    console.log(member);
     Member.findOne({where: {email: member.email}}, function(err, memberInstance){
       
-        if (!ctx.isNewInstance && (member.role_id==2 || member.role_id==2)) {
-          if(member.status == 'active' && member.emailVerified == false && !member.emailSent) {
-            console.log("memberInstance is");
-            console.log(memberInstance);
+        if (!ctx.isNewInstance && (member.role_id==2 || member.role_id == 3)) {
+          if(member.status == 'active' && member.emailVerified == false && !memberInstance.hasOwnProperty('emailSent')) {
               Member.generateVerificationToken(memberInstance, null,  (errToken, token) =>
             {
               if (errToken)
