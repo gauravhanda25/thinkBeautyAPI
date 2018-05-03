@@ -107,8 +107,13 @@ module.exports = function(Member) {
                   // update verification token and organization id
                   memberInstance.verificationToken = token;
                   memberInstance.emailSent = true;
-                  var randomstring = Math.random().toString(36).slice(-8);
-                  memberInstance.password = randomstring;
+                  if(!memberInstance.password) {
+                    var randomstring = Math.random().toString(36).slice(-8);
+                    memberInstance.password = randomstring;
+                  } else {
+                    var randomstring = memberInstance.password;
+                  }
+                  
                   memberInstance.save();
                   const url = 'http://www.thinkbeauty.net/panel/#/verify-email/' + memberInstance.id.toString() +
                     '/' + token;
@@ -511,10 +516,10 @@ module.exports = function(Member) {
               el.artistservices = finalDataServices.filter(function(elInner){
                   if(elInner[data.service]){
                     return true;  
-                  } else {
+                  }/* else {
                     elInner[data.service] = {};
                     return true;
-                  }        
+                  } */       
               })
               return el.artistservices.length > 0;  
             });
