@@ -28,7 +28,7 @@
     },
     "nails": {
       "type": "belongsTo",
-      "model": "Nail",
+      "model": "Nails",
       "foreignKey": "subserviceId",
       "through": ""
     }
