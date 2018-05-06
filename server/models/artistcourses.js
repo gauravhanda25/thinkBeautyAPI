@@ -1,7 +1,7 @@
 'use strict';
 
 module.exports = function(Artistcourses) {
-	Artistcourses.getArtistWithServices = function(date, country, cb) {
+	Artistcourses.getArtistWithCourses = function(date, country, cb) {
 		let whereCondition = {};
 		if(date) {
 			whereCondition = {"startfrom" : new Date(date)};
@@ -19,7 +19,7 @@ module.exports = function(Artistcourses) {
 			        }],
 			        where : whereCondition
 		      }, function(err, results){
-		      cb(null, newArray);
+		      cb(null, results);
         });
 	}
 	Artistcourses.remoteMethod('getArtistWithCourses', {
