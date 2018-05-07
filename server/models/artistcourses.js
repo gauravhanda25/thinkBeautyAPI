@@ -16,7 +16,13 @@ module.exports = function(Artistcourses) {
 					include: [{
 						relation: 'members',
 						scope: whereCountry
-			        }],
+			        },
+			        {
+			        	relation: 'filestorages', // include the owner object
+           				scope: { 
+            				where: {uploadType: 'course', status : 'active'} 
+           
+          				}}],
 			        where : whereCondition
 		      }, function(err, results){
 		      cb(null, results);
