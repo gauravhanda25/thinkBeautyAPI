@@ -21,7 +21,12 @@
       "model": "Member",
       "foreignKey": "memberId",
       "through": ""
-    }
+    },
+    "filestorages": {
+      "type": "hasMany",
+      "model": "FileStorage",
+      "foreignKey": ""
+    },
   },
   "acls": [],
   "methods": {}
