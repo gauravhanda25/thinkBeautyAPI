@@ -10,7 +10,7 @@
     "startfrom": {
       "type": "Date"
     },
-    "endon" : {
+    "endon": {
       "type": "Date"
     }
   },
