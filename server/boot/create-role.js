@@ -10,7 +10,7 @@ module.exports = async function(app)
   {
     // used the models
 
-    const {Role, RoleMapping, Member, DealerAddress, DealerContact, Oem, Brand, Center, MR, AdvertisingAgency, AutoGroup, AutoGroupContact, AgencyContact, Nails, Makeup, Hair, Artistservices, Artistavailability, Artistvacation, Artistcourses, Email, Artistgcc, FileStorage,Favorite, Booking, Voucher, CustomerPoint, BookingSlot} = app.models;
+    const {Role, RoleMapping, Member, DealerAddress, DealerContact, Fixedcharge, Oem, Brand, Center, MR, AdvertisingAgency, AutoGroup, AutoGroupContact, AgencyContact, Nails, Makeup, Hair, Artistservices, Artistavailability, Artistvacation, Artistcourses, Email, Artistgcc, FileStorage,Favorite, Booking, Voucher, CustomerPoint, BookingSlot} = app.models;
 
       
     const AdminRole = await Role.findOne({where: {name: 'Admin'}});
@@ -158,8 +158,12 @@ module.exports = async function(app)
      Booking.defineProperty('cancelledBy', {
           type: ObjectID,
         });
-
-
+    Fixedcharge.defineProperty('memberId', {
+              type: ObjectID,
+            });
+     Fixedcharge.defineProperty('created_by', {
+          type: ObjectID,
+        });
 FileStorage.defineProperty('memberId', {
           type: ObjectID,
         });

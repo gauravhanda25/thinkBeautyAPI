@@ -177,5 +177,9 @@
   "employee": {
     "dataSource": "mongo",
     "public": true
+  },
+  "Fixedcharge": {
+    "dataSource": "mongo",
+    "public": true
   }
 }
