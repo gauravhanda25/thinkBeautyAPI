@@ -181,5 +181,9 @@
   "Fixedcharge": {
     "dataSource": "mongo",
     "public": true
+  },
+  "Microblading": {
+    "dataSource": "mongo",
+    "public": true
   }
 }

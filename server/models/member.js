@@ -400,6 +400,11 @@ module.exports = function(Member) {
           }
         };
       }
+
+      var countryFilter = {}
+      if(country) {
+        countryFilter = {country : country};
+      }
       Member.find({
         include: [{
           relation: 'artistservices', // include the owner object
@@ -411,9 +416,6 @@ module.exports = function(Member) {
         ,
          {
           relation: 'countries', // include the owner object
-          scope: { 
-            where: {id: country}
-          }
           },
          {
           relation: 'filestorages', // include the owner object
@@ -423,14 +425,16 @@ module.exports = function(Member) {
           }
           }
         ],
-        where : {
-          role_id : 2
+        where : 
+        {
+          and:[{or : [{role_id : 2}, {role_id : 3}]}, countryFilter] 
         }
       }, function(err, result) {
 
         let data =  JSON.stringify(result);
         let finalData = JSON.parse(data)
           
+        console.log(finalData);
         var newArray = finalData.filter(function (el) {
           let elArtistServices =  JSON.stringify(el.artistservices);
           let finalDataServices = JSON.parse(elArtistServices)
@@ -441,9 +445,12 @@ module.exports = function(Member) {
                 elInner[serviceType] = {}
               }           
           })
-          return el.artistservices.length > 0;  
+          if(el.artistservices.length > 0) {
+             delete el['artistservices'];
+             return true;
+          }
         });
-          
+          console.log(newArray);
           cb(null, newArray);
       });
 
@@ -451,7 +458,8 @@ module.exports = function(Member) {
   }
   
   function getMemberDetails(type, data, cb){
-    let filterWithDate = {}
+    let filterWithDate = {};
+    console.log(type);
     if(data.date) {
       if(type == 'vacationFound') {
 
@@ -480,7 +488,7 @@ module.exports = function(Member) {
           }
         }
       }    
-
+    console.log(filterWithDate);
     Member.find({
       include: [{
         relation: 'artistservices', // include the owner object
@@ -513,31 +521,35 @@ module.exports = function(Member) {
         if(result) {
           let resultData =  JSON.stringify(result);
           let finalData = JSON.parse(resultData);
+
           if(type != '') {
             var newArray = finalData;
               newArray = finalData.filter(function (el) {
-              let elArtistServices =  JSON.stringify(el.artistservices);
-              let finalDataServices = JSON.parse(elArtistServices)
-              el.artistservices = finalDataServices.filter(function(elInner){
-                  if(elInner[data.service]){
-                    return true;  
-                  }/* else {
-                    elInner[data.service] = {};
-                    return true;
-                  } */       
-              })
-              return el.artistservices.length > 0;  
+                let elArtistServices =  JSON.stringify(el.artistservices);
+                let finalDataServices = JSON.parse(elArtistServices)
+                console.log(el);
+                el.artistservices = finalDataServices.filter(function(elInner){
+                    if(elInner[data.service]){
+                      console.log('I am here');
+                      elInner.subServiceName = elInner[data.service].name;
+                      console.log(elInner);
+                      return true;  
+                    } else {
+                      console.log('I am here not');
+                    }        
+                })
+                return el.artistservices.length > 0;  
             });
-            console.log(newArray);
-            newArray = newArray.filter(function (el) {
+            /*newArray = newArray.filter(function (el) {
               return el.artistavailabilities.length > 0;  
-            });
+            });*/
             console.log(newArray);
           } else {
             var newArray = finalData;
           }
           if(type == 'vacationFound' && newArray.length) {
               newArray[0].artistavailabilities = [{"message" : "Artist is on vacation on selected date. Please select other date.", status : 2}];  
+              console.log('here3');
               cb(null, newArray);
           } else if(type == 'specificDate' && newArray.length == 0) {
               getMemberDetails('otherDays', data, cb);
@@ -582,11 +594,23 @@ module.exports = function(Member) {
               newArray[0].artistavailabilities[0].status = 0;
             }
 
-            if(typeof newArray[0]['artistavailabilities'] == 'undefined') {
-              newArray[0]['artistavailabilities'] = [{"message" : "There is no availability for this servicetype.", status : 1}];
+            if(typeof newArray[0]['artistavailabilities'] == 'undefined' || newArray[0]['artistavailabilities'].length == 0) {
+              if(type == 'specificDate') {
+                getMemberDetails('otherDays', data, cb);
+              } else {
+                newArray[0]['artistavailabilities'] = [{"message" : "There is no availability for this servicetype.", status : 1}];
+                cb(null, newArray);
+              }
+              
+              
+            } else {
+              console.log('here');
+              cb(null, newArray);
             }
-            cb(null, newArray);
+            
           } else {
+            newArray[0]['artistavailabilities'] = [{"message" : "There is no availability for this servicetype.", status : 1}];
+            console.log('here1');
             cb(null, newArray);
           }
           
@@ -617,7 +641,7 @@ module.exports = function(Member) {
           }
         });
       } else {
-        getMemberDetails('', data, cb);
+        getMemberDetails('otherDays', data, cb);
         //resArr[0].status = 'specificDate';
         //cb(null, resArr);
       }
