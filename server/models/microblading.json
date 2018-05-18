@@ -6,8 +6,7 @@
     "validateUpsert": true
   },
   "properties": {},
-  "validations": [],
-  "relations": {
+ "relations": {
     "artistservices": {
       "type": "hasMany",
       "model": "Artistservices",
