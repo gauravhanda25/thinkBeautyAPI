@@ -17,6 +17,11 @@
       "type": "hasMany",
       "model": "Member",
       "foreignKey": "country"
+    },
+    "fixedcharges": {
+      "type": "hasMany",
+      "model": "Fixedcharge",
+      "foreignKey": "country"
     }
   },
   "acls": [],
