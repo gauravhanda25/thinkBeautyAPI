@@ -522,7 +522,7 @@ module.exports = function(Member) {
         }
       },
       filterWithDate,
-      fixedCharge
+      fixedCharge,
       {
         relation: 'countries', // include the owner object
       },
