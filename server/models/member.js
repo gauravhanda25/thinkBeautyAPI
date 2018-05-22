@@ -388,7 +388,9 @@ module.exports = function(Member) {
         serviceType = 'hairs';
       } else if(serviceType == 'makeup') {
         serviceType = 'makeups'
-      } else {
+      }else if (serviceType == 'microblading') {
+        serviceType = 'microbladings'
+      }  else {
         serviceType = 'nails'
       }
       let filterWithDate = {}
@@ -420,7 +422,7 @@ module.exports = function(Member) {
          {
           relation: 'filestorages', // include the owner object
            scope: { 
-            where: {uploadType: 'main', status : 'active'} 
+            where: {status : 'active'} 
            
           }
           }
@@ -433,12 +435,11 @@ module.exports = function(Member) {
 
         let data =  JSON.stringify(result);
         let finalData = JSON.parse(data)
-          
-        console.log(finalData);
         var newArray = finalData.filter(function (el) {
           let elArtistServices =  JSON.stringify(el.artistservices);
           let finalDataServices = JSON.parse(elArtistServices)
           el.artistservices = finalDataServices.filter(function(elInner){
+            console.log(elInner[serviceType]);
               if(elInner[serviceType]){
                 return true;  
               } else {
@@ -446,11 +447,10 @@ module.exports = function(Member) {
               }           
           })
           if(el.artistservices.length > 0) {
-             delete el['artistservices'];
+             //delete el['artistservices'];
              return true;
           }
         });
-          console.log(newArray);
           cb(null, newArray);
       });
 
@@ -459,7 +459,6 @@ module.exports = function(Member) {
   
   function getMemberDetails(type, data, cb){
     let filterWithDate = {};
-    console.log(type);
     if(data.date) {
       if(type == 'vacationFound') {
 
@@ -488,7 +487,30 @@ module.exports = function(Member) {
           }
         }
       }    
-    console.log(filterWithDate);
+
+      var whereFavorite = {}
+      var fixedCharge = {}
+      var favoriteRelation = {}
+      if(data.userId) {
+       var whereFavorite = {
+          where: {
+            userId : data.userId
+          }
+        }
+        favoriteRelation = {
+          relation : "favourites",
+          scope : whereFavorite
+        }
+
+      }
+
+    if(data.countryId) {
+      fixedCharge = {
+        relation: 'fixedcharges',
+        scope : {where : {country : data.country}}
+      }
+    }
+
     Member.find({
       include: [{
         relation: 'artistservices', // include the owner object
@@ -500,6 +522,7 @@ module.exports = function(Member) {
         }
       },
       filterWithDate,
+      fixedCharge
       {
         relation: 'countries', // include the owner object
       },
@@ -511,7 +534,8 @@ module.exports = function(Member) {
             status: 'active'
           }
         }
-      }
+      },
+        favoriteRelation
       ],
       where: {
           id: data.artistId
@@ -527,17 +551,22 @@ module.exports = function(Member) {
               newArray = finalData.filter(function (el) {
                 let elArtistServices =  JSON.stringify(el.artistservices);
                 let finalDataServices = JSON.parse(elArtistServices)
-                console.log(el);
+                console.log(finalDataServices);
                 el.artistservices = finalDataServices.filter(function(elInner){
                     if(elInner[data.service]){
-                      console.log('I am here');
                       elInner.subServiceName = elInner[data.service].name;
-                      console.log(elInner);
                       return true;  
                     } else {
-                      console.log('I am here not');
                     }        
                 })
+
+                if(el.favourites && el.favourites.length) {
+                  console.log('inside favourites flag');
+                  el.favoriteFlag = el.favourites[0].flag;
+                  delete el['favourites'];
+                } else if(el.favourites && el.favourites.length == 0 || !el.favourites) {
+                  el.favoriteFlag = false;
+                }
                 return el.artistservices.length > 0;  
             });
             /*newArray = newArray.filter(function (el) {
@@ -609,7 +638,7 @@ module.exports = function(Member) {
             }
             
           } else {
-            newArray[0]['artistavailabilities'] = [{"message" : "There is no availability for this servicetype.", status : 1}];
+            //newArray[0]['artistavailabilities'] = [{"message" : "There is no availability for this servicetype.", status : 1}];
             console.log('here1');
             cb(null, newArray);
           }
@@ -618,6 +647,7 @@ module.exports = function(Member) {
           
         } else {
           console.log("In else");
+          cb(null, result);
         }
     });
   }
@@ -627,7 +657,9 @@ module.exports = function(Member) {
         data.service = 'hairs';
       } else if(data.service == 'makeup') {
         data.service = 'makeups'
-      } else {
+      } else if (data.service == 'microblading') {
+        data.service = 'microbladings'
+      } else  {
         data.service = 'nails'
       }
       if(data.date) {

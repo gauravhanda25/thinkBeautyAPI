@@ -185,5 +185,9 @@
   "Microblading": {
     "dataSource": "mongo",
     "public": true
+  },
+  "StaticPage": {
+    "dataSource": "mongo",
+    "public": true
   }
 }

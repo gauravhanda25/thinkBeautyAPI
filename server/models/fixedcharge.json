@@ -13,7 +13,13 @@
       "model": "Country",
       "foreignKey": "country",
       "through": ""
-    }
+    },
+    "members": {
+      "type": "belongsTo",
+      "model": "Member",
+      "foreignKey": "memberId",
+      "through": ""
+    },
   },
   "acls": [],
   "methods": {}
