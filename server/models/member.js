@@ -457,7 +457,7 @@ module.exports = function(Member) {
 
   }
   
-  function async getMemberDetails(type, data, cb){
+  async function  getMemberDetails(type, data, cb){
     let filterWithDate = {};
     const {Commissions} = app.models;
     const Commission = await Commissions.findOne({where:{type: "all"}});
