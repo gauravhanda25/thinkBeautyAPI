@@ -19,7 +19,7 @@
       "model": "Member",
       "foreignKey": "memberId",
       "through": ""
-    },
+    }
   },
   "acls": [],
   "methods": {}
