@@ -457,8 +457,10 @@ module.exports = function(Member) {
 
   }
   
-  function getMemberDetails(type, data, cb){
+  function async getMemberDetails(type, data, cb){
     let filterWithDate = {};
+    const {Commissions} = app.models;
+    const Commission = await Commissions.findOne({where:{type: "all"}});
     if(data.date) {
       if(type == 'vacationFound') {
 
@@ -545,7 +547,7 @@ module.exports = function(Member) {
         if(result) {
           let resultData =  JSON.stringify(result);
           let finalData = JSON.parse(resultData);
-
+          finalData.commission = Commission;
           if(type != '') {
             var newArray = finalData;
               newArray = finalData.filter(function (el) {
