@@ -189,5 +189,9 @@
   "StaticPage": {
     "dataSource": "mongo",
     "public": true
+  },
+  "ContactUsDetail": {
+    "dataSource": "mongo",
+    "public": true
   }
 }

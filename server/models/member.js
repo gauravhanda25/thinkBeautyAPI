@@ -457,10 +457,10 @@ module.exports = function(Member) {
 
   }
   
-  async function  getMemberDetails(type, data, cb){
+  function  getMemberDetails(type, data, cb){
     let filterWithDate = {};
     const {Commissions} = app.models;
-    const Commission = await Commissions.findOne({where:{type: "all"}});
+    
     if(data.date) {
       if(type == 'vacationFound') {
 
@@ -480,7 +480,6 @@ module.exports = function(Member) {
           } else {
             whereDate = {where: {memberId:data.artistId, days: "working"}}
           }
-          console.log(whereDate);
           if(data.date) {
             filterWithDate = {
               relation: 'artistavailabilities', // include the owner object
@@ -547,13 +546,12 @@ module.exports = function(Member) {
         if(result) {
           let resultData =  JSON.stringify(result);
           let finalData = JSON.parse(resultData);
-          finalData.commission = Commission;
+          //finalData.commission = Commission;
           if(type != '') {
             var newArray = finalData;
               newArray = finalData.filter(function (el) {
                 let elArtistServices =  JSON.stringify(el.artistservices);
                 let finalDataServices = JSON.parse(elArtistServices)
-                console.log(finalDataServices);
                 el.artistservices = finalDataServices.filter(function(elInner){
                     if(elInner[data.service]){
                       elInner.subServiceName = elInner[data.service].name;
@@ -563,7 +561,6 @@ module.exports = function(Member) {
                 })
 
                 if(el.favourites && el.favourites.length) {
-                  console.log('inside favourites flag');
                   el.favoriteFlag = el.favourites[0].flag;
                   delete el['favourites'];
                 } else if(el.favourites && el.favourites.length == 0 || !el.favourites) {
@@ -574,13 +571,11 @@ module.exports = function(Member) {
             /*newArray = newArray.filter(function (el) {
               return el.artistavailabilities.length > 0;  
             });*/
-            console.log(newArray);
           } else {
             var newArray = finalData;
           }
           if(type == 'vacationFound' && newArray.length) {
               newArray[0].artistavailabilities = [{"message" : "Artist is on vacation on selected date. Please select other date.", status : 2}];  
-              console.log('here3');
               cb(null, newArray);
           } else if(type == 'specificDate' && newArray.length == 0) {
               getMemberDetails('otherDays', data, cb);
@@ -630,13 +625,22 @@ module.exports = function(Member) {
                 getMemberDetails('otherDays', data, cb);
               } else {
                 newArray[0]['artistavailabilities'] = [{"message" : "There is no availability for this servicetype.", status : 1}];
-                cb(null, newArray);
+                Commissions.findOne({where:{type: "all"}}, function(err, commission){
+                    newArray[0].commission = commission;
+                    console.log(newArray)
+                    cb(null, newArray);
+                });
               }
               
               
             } else {
               console.log('here');
-              cb(null, newArray);
+              Commissions.findOne({where:{type: "all"}}, function(err, commission){
+                  newArray[0].commission = commission;
+                  
+                  cb(null, newArray);
+              });
+              
             }
             
           } else {

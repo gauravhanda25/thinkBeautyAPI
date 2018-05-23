@@ -8,8 +8,9 @@ module.exports = function(Booking) {
 	Booking.cancelBooking = function(bookingId, userId, cb) {
 		const {Voucher} = app.models;
 		Booking.findOne({where : {id : bookingId}}, function(err, booking){
-			booking.updateAttribute('bookingStatus', 'cancelled');
-			booking.updateAttribute('cancelledBy', userId);
+			booking.bookingStatus = 'cancelled';
+			booking.cancelledBy =  userId;
+			booking.save();
 
 			var voucherCode = voucher_codes.generate({
 							    prefix: "TB",
