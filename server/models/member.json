@@ -10,11 +10,20 @@
   },
   "mixins": {
     "Timestamp": {
-      "created": "created",
-      "modified": "modified"
+      "created": {
+        "type": "Date",
+        "default": "$now"
+      },
+      "modified": {
+        "type": "Date",
+        "default": "$now"
+      }
     }
   },
-  "properties": {},
+  "properties": {
+    "country" : {"type": "ObjectID"},
+    "city" : {"type": "ObjectID"}
+  },
   "validations": [],
   "relations": {
     "roles": {
@@ -53,10 +62,35 @@
       "model": "Artistavailability",
       "foreignKey": ""
     },
+    "artistgccs": {
+      "type": "hasMany",
+      "model": "Artistgcc",
+      "foreignKey": "artistId"
+    },
     "artistcourses": {
       "type": "hasMany",
       "model": "Artistcourses",
       "foreignKey": ""
+    },
+    "updates": {
+      "type": "hasMany",
+      "model": "Update",
+      "foreignKey": "artistId"
+    },
+    "artistvacations": {
+      "type": "hasMany",
+      "model": "Artistvacation",
+      "foreignKey": ""
+    },
+    "bookingslots": {
+      "type": "hasMany",
+      "model": "BookingSlot",
+      "foreignKey": "artistId"
+    },
+    "bookingstatuses": {
+      "type": "hasMany",
+      "model": "bookingStatus",
+      "foreignKey": "artistId"
     },
     "customeraddresses": {
       "type": "hasMany",
@@ -89,8 +123,14 @@
       "foreignKey": "country",
       "through": ""
     },
-    "fixedcharges": {
+    "provinces": {
       "type": "belongsTo",
+      "model": "Province",
+      "foreignKey": "city",
+      "through": ""
+    },
+    "fixedcharges": {
+      "type": "hasMany",
       "model": "Fixedcharge",
       "foreignKey": "memberId",
       "through": ""

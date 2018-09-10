@@ -19,8 +19,8 @@
         "secure": true,
         "port": 465,
         "auth": {
-          "user": "gaggyhanda25@gmail.com",
-          "pass": "handaG0725@"
+          "user": "admin@thinkbeauty.net",
+          "pass": "Thinkbeauty2018"
         }
       }
     ]
@@ -29,6 +29,13 @@
     "name": "bullseyeDatasource",
     "connector": "loopback-component-storage",
     "provider": "filesystem",
-    "root": "./server/storage"
+    "root": "/var/www/html/thinkBeautyAPI/server/storage"
+  },
+  "push": {
+    "name": "push",
+    "connector": "loopback-component-push",
+    "installation": "installation",
+    "notification": "notification",
+    "application": "application"
   }
 }

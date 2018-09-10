@@ -11,7 +11,12 @@
     "provinces": {
       "type": "hasMany",
       "model": "Province",
-      "foreignKey": ""
+      "foreignKey": "countryId"
+    },
+    "artistgcclocations": {
+      "type": "hasMany",
+      "model": "Artistgcclocation",
+      "foreignKey": "country"
     },
     "members": {
       "type": "hasMany",

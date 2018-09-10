@@ -193,5 +193,21 @@
   "ContactUsDetail": {
     "dataSource": "mongo",
     "public": true
+  },
+  "faq": {
+    "dataSource": "mongo",
+    "public": true
+  },
+  "bookingStatus": {
+    "dataSource": "mongo",
+    "public": true
+  },
+  "DeviceToken": {
+    "dataSource": "mongo",
+    "public": true
+  },
+  "push": {
+    "dataSource": "push",
+    "public": true
   }
 }

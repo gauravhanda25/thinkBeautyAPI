@@ -11,7 +11,12 @@
     "countries": {
       "type": "belongsTo",
       "model": "Country",
-      "foreignKey": ""
+      "foreignKey": "countryId"
+    },
+    "members": {
+      "type": "hasMany",
+      "model": "Member",
+      "foreignKey": "city"
     }
   },
   "acls": [],

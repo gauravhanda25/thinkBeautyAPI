@@ -1,11 +1,48 @@
 'use strict';
 
 module.exports = function(Voucher) {
-	Voucher.getPoints = function(userId, cb) {
+	Voucher.getVouchers = function(userId, cb) {
 		if(userId) {
-			Voucher.find({where : {userId : userId}, include : ['members' , 'artists']}, function(err, points){
+			let currencyCodes = {
+	            "Kuwait": "KD",
+	            "Bahrain": "BHD",
+	            "UAE": "AED",
+	            "Oman": "OMR"
+	        }
+
+			Voucher.find({where : {userId : userId, status : "active"},  include: [
+					{
+                    	relation: 'members'
+                    },
+                    {
+	                    relation: 'artists',
+	                    scope: {
+	                        
+	                        include: {
+	                            "relation": "countries"
+	                        }
+	                    }
+            	    }],
+            	    order : 'id desc'
+            }, function(err, points){
 				if(points) {
-					cb(null, points);
+					
+					let data = JSON.stringify(points);
+                    let finalPoints = JSON.parse(data);
+                    var newPoints;
+                    newPoints = finalPoints.filter(function(elInner) {
+                        if (elInner.artists) {
+                        	var el = elInner.artists;
+                            //elInner.subServiceName = elInner[data.service].name;
+                            if (el.countries.name == 'Saudi Arabia') {
+                                elInner.currencyCode = 'SAR';
+                            } else {
+                                elInner.currencyCode = currencyCodes[el.countries.name];
+                            }
+                            return true;
+                        } 
+                    })
+                    cb(null, newPoints);
 				} else {
 					cb(null,{status : 0, message : 'No Voucher available for this user!'});
 				}

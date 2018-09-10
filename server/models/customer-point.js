@@ -4,7 +4,35 @@ module.exports = function(Customerpoint) {
 
 	Customerpoint.getPoints = function(userId, cb) {
 		if(userId) {
-			Customerpoint.find({where : {userId : userId}, include : ['members' , 'artists']}, function(err, points){
+			Customerpoint.find({where : {userId : userId}, order : 'id desc', include : [
+					{
+			          relation: 'members', // include the owner object
+			          scope: { 
+			            include : [
+			            {
+			            	"relation" : "countries",
+			            },
+			            {
+			            	"relation" : "filestorages",
+			            	scope : {
+			            		where : {status : "active", uploadType : "profile"}	
+			            	}
+			            }, {"relation" : "provinces"}]
+			          }
+			      	},
+			      	{
+			          relation: 'artists', // include the owner object
+			          scope: { 
+			            include : [
+			            {"relation" : "countries"},
+			            {
+			            	"relation" : "filestorages",
+			            	scope : {
+			            		where : {status : "active", uploadType : "profile"}	
+			            	}
+			            }, {"relation" : "provinces"}]
+			          }
+			      	}]}, function(err, points){
 				if(points) {
 					cb(null, points);
 				} else {

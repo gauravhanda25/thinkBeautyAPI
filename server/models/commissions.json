@@ -7,8 +7,14 @@
   },
   "mixins": {
     "Timestamp": {
-      "created": "created",
-      "modified": "modified"
+      "created": {
+        "type": "Date",
+        "default": "$now"
+      },
+      "modified": {
+        "type": "Date",
+        "default": "$now"
+      }
     }
   },
   "properties": {},

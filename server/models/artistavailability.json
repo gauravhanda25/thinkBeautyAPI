@@ -5,7 +5,11 @@
   "options": {
     "validateUpsert": true
   },
-  "properties": {},
+  "properties": {
+    "date": {
+      "type": "Date"
+    }
+  },
   "validations": [],
   "relations": {
     "members": {

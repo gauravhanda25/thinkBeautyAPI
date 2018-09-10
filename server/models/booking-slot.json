@@ -5,9 +5,20 @@
   "options": {
     "validateUpsert": true
   },
-  "properties": {},
+  "properties": {
+    "bookingDate": {
+      "type": "Date"
+    }
+  },
   "validations": [],
-  "relations": {},
+  "relations": {
+    "members": {
+      "type": "belongsTo",
+      "model": "Member",
+      "foreignKey": "artistId",
+      "through": ""
+    }
+  },
   "acls": [],
   "methods": {}
 }

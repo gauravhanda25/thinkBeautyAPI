@@ -1,5 +1,6 @@
-module.exports = function(url, pass, email, username, loginUrl)
+module.exports = function(url, member)
 {
+  var name = (member.name) ? member.name : member.username;
   return `<style>
    *{
       box-sizing: border-box;
@@ -62,9 +63,10 @@ module.exports = function(url, pass, email, username, loginUrl)
       font-size: 14px;
    }
 </style>
+
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<body  style="">
-   <div class="wrapper">
+<body  style="background-color: #ceb26f">
+   <div class="wrapper" >
       <div class="header">
          <div class="container">
             <div class="logo">
@@ -73,14 +75,25 @@ module.exports = function(url, pass, email, username, loginUrl)
 
             <div class="content">
                <img src="http://www.thinkbeauty.net/images/main-bg.png">
-               <p style="text-align: center; margin: 20px 0;">Please click on confirm email button bellow so you can explore the available services among our platform and enjoy having your desired services done with ease & efficiency !</p>
-               <p style="text-align: center; color: #ceb26f;"><strong style="color: #ceb26f;">Get started with a new beautiful experience now !</strong></p>
-               <a class="btn" href="${url}">Confirm Email</a>
-               <p style="text-align: center; margin: 20px 0;">Once confirmed, use the below details to login.</p>
-               <p>Email : ${email}</p>
-               <p>Password : ${pass}</p>
-               <img src="http://www.thinkbeauty.net/images/footer.jpg">
-               <p style="text-align: center; margin-top: 20px; margin-bottom: 0;"><strong><a style="color: #000;" href="http://www.thinkbeauty.net/">www.thinkbeauty.net</a></strong><br>Copyright 2018 Think Beauty. All right reserved</p>
+               <br>
+               <br>
+
+              <p>Hi ${name},</p>
+              
+              <p>
+              To proceed to the password reset page, please, click on the button below.
+              <br>
+              Your password will not change unless you click the button and create a new one.
+              <br><br>
+              Thank you,
+              <br>
+              Team ThinkBeauty.
+            </p>
+            <br>
+            <p><a class="hc-button" href="${url}">Reset password</a></p>
+            <br>          
+            <img src="http://www.thinkbeauty.net/images/footer.jpg">
+            <p style="text-align: center; margin-top: 20px; margin-bottom: 0;"><strong><a style="color: #000;" href="http://www.thinkbeauty.net/">www.thinkbeauty.net</a></strong><br>Copyright 2018 Think Beauty. All right reserved</p>
             </div>
          </div>
       </div>

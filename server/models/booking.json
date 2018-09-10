@@ -7,8 +7,14 @@
   },
   "mixins": {
     "Timestamp": {
-      "created": "bookedAt",
-      "modified": "modified"
+      "created": {
+        "type": "Date",
+        "default": "$now"
+      },
+      "modified": {
+        "type": "Date",
+        "default": "$now"
+      }
     }
   },
   "properties": {
@@ -28,6 +34,12 @@
       "type": "belongsTo",
       "model": "Member",
       "foreignKey": "artistId",
+      "through": ""
+    },
+    "artistcourses": {
+      "type": "belongsTo",
+      "model": "Artistcourses",
+      "foreignKey": "courseId",
       "through": ""
     },
     "vouchers": {

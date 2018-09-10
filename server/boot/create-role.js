@@ -1,5 +1,5 @@
 const debug = require('debug')('loopback:boot:roles');
-
+var apn = require('apn');
 debug.log = console.log.bind(console);
 const app = require('../server.js');
 const inlineCss = require('inline-css');
@@ -10,8 +10,48 @@ module.exports = async function(app)
   {
     // used the models
 
-    const {Role, RoleMapping, Member, DealerAddress, DealerContact, Fixedcharge, Oem, Brand, Center, MR, AdvertisingAgency, AutoGroup, AutoGroupContact, AgencyContact, Nails, Makeup, Hair, Artistservices, Artistavailability, Artistvacation, Artistcourses, Email, Artistgcc, FileStorage,Favorite, Booking, Voucher, CustomerPoint, BookingSlot} = app.models;
+    const {Role, RoleMapping, Member, DealerAddress, DealerContact, Fixedcharge, Oem, Brand, Center, MR, AdvertisingAgency, AutoGroup, AutoGroupContact, AgencyContact, Nails, Makeup, Hair, Artistservices, Artistavailability, Artistvacation, Artistcourses, Email, Artistgcc, FileStorage,Favorite, Booking, Voucher, CustomerPoint, BookingSlot, Update, bookingStatus, Artistgcclocation,  DeviceToken, push} = app.models;
 
+
+    /* var options = {
+      cert: '/var/www/html/thinkBeautyAPI/credentials/cert.pem',
+      key: '/var/www/html/thinkBeautyAPI/credentials/key.pem',
+      passphrase : '1234',
+      production : true
+    };
+    var apnProvider =  new apn.Provider(options);
+
+    let deviceToken = "1E4A12553D497F40ED1E444039AC50FD9902F12B1CE73AE793D33617141D8878";
+
+    var note = new apn.Notification();
+
+    note.expiry = Math.floor(Date.now() / 1000) + 3600;
+    note.badge = 3;
+    note.sound = "ping.aiff";
+    note.alert = "\uD83D\uDCE7 \u2709 goo kha";
+    note.payload = {'messageFrom': 'gaurav'};
+    note.topic = 'com.ios.Think';
+    apnProvider.send(note, deviceToken).then( (result) => {
+      console.log(result);
+      console.log(result.failed);
+    });*/
+
+    // conditional deletion
+    /*BookingSlot.destroyAll({}, function(err, t){console.log('deleted')});
+    bookingStatus.destroyAll({}, function(err, t){console.log('deleted')});
+    Booking.destroyAll({}, function(err, t){console.log('deleted')});
+    */
+
+    /*var x = {where : {id : "5b264ef35fcf1f0a40359afb"}};
+    console.log(x);
+    Artistavailability.findOne(x, function(err, avail){
+      console.log(avail);
+      avail.date = new Date('2018-06-27');
+      avail.save();
+    });*/
+    
+
+        
       
     const AdminRole = await Role.findOne({where: {name: 'Admin'}});
     if (!AdminRole)
@@ -59,6 +99,15 @@ module.exports = async function(app)
     Member.defineProperty('country', {
           type: ObjectID,
         });
+
+
+    Artistgcclocation.defineProperty('country', {
+          type: ObjectID,
+        });
+
+    Member.defineProperty('city', {
+          type: ObjectID,
+        });
      Member.defineProperty('created_by', {
           type: ObjectID,
         });
@@ -73,6 +122,10 @@ module.exports = async function(app)
               type: ObjectID,
             });
     Artistservices.defineProperty('memberId', {
+              type: ObjectID,
+            });
+
+    DeviceToken.defineProperty('memberId', {
               type: ObjectID,
             });
     Artistservices.defineProperty('subserviceId', {
@@ -92,6 +145,9 @@ module.exports = async function(app)
         type: ObjectID,
       });
      Artistgcc.defineProperty('artistId', {
+        type: ObjectID,
+      });
+       Artistgcc.defineProperty('gcclocation', {
         type: ObjectID,
       });
 
@@ -114,6 +170,9 @@ module.exports = async function(app)
         });
 
      Booking.defineProperty('artistId', {
+          type: ObjectID,
+        });
+     Booking.defineProperty('courseId', {
           type: ObjectID,
         });
      Booking.defineProperty('userId', {
@@ -165,6 +224,12 @@ module.exports = async function(app)
           type: ObjectID,
         });
 FileStorage.defineProperty('memberId', {
+          type: ObjectID,
+        });
+Update.defineProperty('artistId', {
+          type: ObjectID,
+        });
+bookingStatus.defineProperty('artistId', {
           type: ObjectID,
         });
 

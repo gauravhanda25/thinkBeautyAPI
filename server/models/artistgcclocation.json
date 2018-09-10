@@ -7,7 +7,18 @@
   },
   "properties": {},
   "validations": [],
-  "relations": {},
+  "relations": {
+    "countries": {
+      "type": "belongsTo",
+      "model": "Country",
+      "foreignKey": "country"
+    },
+    "artistgccs": {
+      "type": "hasMany",
+      "model": "Artistgcc",
+      "foreignKey": "gcclocation"
+    }
+  },
   "acls": [],
   "methods": {}
 }

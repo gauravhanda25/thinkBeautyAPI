@@ -61,11 +61,11 @@ module.exports = function(Favorite) {
 		                		console.log(finalImage);
 		          				el.profileImage = finalImage[0];
 	          				} else {
-	          					el.profileImage = [];
+	          					el.profileImage = {};
 	          				}
 	          				
 	          			} else {
-	          				el.profileImage = [];
+	          				el.profileImage = {};
 	          			}
 	          			delete el['members'];
 	          			return true;

@@ -22,10 +22,16 @@
       "foreignKey": "memberId",
       "through": ""
     },
+    "bookings": {
+      "type": "hasMany",
+      "model": "Booking",
+      "foreignKey": "courseId",
+      "through": ""
+    },
     "filestorages": {
       "type": "hasMany",
       "model": "FileStorage",
-      "foreignKey": ""
+      "foreignKey": "courseId"
     }
   },
   "acls": [],

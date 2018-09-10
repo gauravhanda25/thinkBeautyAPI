@@ -1,5 +1,5 @@
 {
-  "name": "CustomerPoint",
+  "name": "DeviceToken",
   "base": "PersistedModel",
   "idInjection": true,
   "options": {
@@ -23,13 +23,7 @@
     "members": {
       "type": "belongsTo",
       "model": "Member",
-      "foreignKey": "userId",
-      "through": ""
-    },
-    "artists": {
-      "type": "belongsTo",
-      "model": "Member",
-      "foreignKey": "artistId",
+      "foreignKey": "memberId",
       "through": ""
     }
   },
