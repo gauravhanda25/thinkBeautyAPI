@@ -26,11 +26,11 @@
   "email": "admin@thinkbeauty.net",
   "artist_cert": "/var/www/html/thinkBeautyAPI/credentials/cert.pem",
   "artist_key": "/var/www/html/thinkBeautyAPI/credentials/key.pem",
-  "artist_passphrase" : "1234",
+  "artist_passphrase": "1234",
   "user_cert": "/var/www/html/thinkBeautyAPI/credentials/user_cert.pem",
   "user_key": "/var/www/html/thinkBeautyAPI/credentials/user_key.pem",
-  "user_passphrase" : "12345",
-  "fcmArtistKey" : "AIzaSyCgNTxoRZpkd20tCA_ mzc1al2Kfvp5E6CI",
-  "fcmUserKey" : "AIzaSyCDvofqq4SafSVywQ1rtjpZLs mHr0u2Fvs",
-  "production" : true
+  "user_passphrase": "12345",
+  "fcmArtistKey": "AIzaSyCgNTxoRZpkd20tCA_ mzc1al2Kfvp5E6CI",
+  "fcmUserKey": "AIzaSyCDvofqq4SafSVywQ1rtjpZLs mHr0u2Fvs",
+  "production": true
 }

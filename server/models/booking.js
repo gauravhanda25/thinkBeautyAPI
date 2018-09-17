@@ -288,7 +288,8 @@ module.exports = function(Booking) {
     Booking.cancelBookingByArtist = function(bookingId, cb) {
         const {
             Voucher,
-            BookingSlot
+            BookingSlot,
+            DeviceToken
         } = app.models;
         Booking.findOne({
             where: {

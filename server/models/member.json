@@ -21,8 +21,12 @@
     }
   },
   "properties": {
-    "country" : {"type": "ObjectID"},
-    "city" : {"type": "ObjectID"}
+    "country": {
+      "type": "ObjectID"
+    },
+    "city": {
+      "type": "ObjectID"
+    }
   },
   "validations": [],
   "relations": {

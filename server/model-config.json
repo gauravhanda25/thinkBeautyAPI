@@ -209,5 +209,9 @@
   "push": {
     "dataSource": "push",
     "public": true
+  },
+  "Enquiry": {
+    "dataSource": "mongo",
+    "public": true
   }
 }
